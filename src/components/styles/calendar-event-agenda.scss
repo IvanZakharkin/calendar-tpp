@@ -1,0 +1,73 @@
+.calendar-event-agenda {
+    position: absolute;
+    background: rgba(#d1e1f7, 0.6);
+    border-radius: 10px;
+    // height: 100%;
+    margin: 0 15px 0 5px;
+    border: 2px solid #fff;
+    width: 99%;
+    cursor: pointer;
+  
+    &_transfer {
+      width: 90% !important;
+      left: 0% !important;
+      margin: 0 5% !important;
+      box-shadow: 0 0.5rem 1rem rgba(63, 87, 193, 0.2);
+      z-index: 1000 !important;
+    }
+  
+    &_create {
+      width: 100%;
+      height: auto;
+      background: #d1e1f7;
+    }
+  
+    &__info {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+    }
+    &__title {
+      color: #093254;
+      font-size: 14px;
+    }
+    &__time {
+      color: #656875;
+      font-size: 14px;
+    }
+  
+    &__persons {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+    &__person {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    &__person-popup {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 5px);
+      right: 0;
+      width: 340px;
+  
+      &_active {
+        display: block;
+      }
+    }
+  
+    &__person-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      // border: none;
+      // background: none;
+      padding: 0;
+      cursor: pointer;
+    }
+    &__person-avatar-img {
+      object-fit: cover;
+    }
+  }

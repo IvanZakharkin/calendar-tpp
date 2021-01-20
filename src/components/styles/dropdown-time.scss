@@ -1,0 +1,14 @@
+.dropdown-time  {
+  .dropdown-item {
+    padding: 5px;
+
+  }
+  .dropdown-menu {
+    padding: 5px;
+    padding-right: 10px;
+    // width: 25px;
+    min-width: 0;
+    max-height: 150px;
+    overflow: auto;
+  }
+}

@@ -1,0 +1,34 @@
+{
+	"events": [
+		{
+			"dateStart": 1590491667,
+			"dateEnd": 1590502467,
+			"name": "TestEvent",
+			"desk": "TestEventDesk"
+		},
+		{
+			"dateStart": 1590480282,
+			"dateEnd": 1590491082,
+			"name": "NewTestEvent",
+			"desk": "NewTestEventDesk"
+		},
+		{
+			"dateStart": 1590401667,
+			"dateEnd": 1590419667,
+			"name": "TestEvent2",
+			"desk": "TestEventDesk2"
+		},
+		{
+			"dateStart": 1590592467,
+			"dateEnd": 1590603267,
+			"name": "TestEvent3",
+			"desk": "TestEventDesk3"
+		},
+		{
+			"dateStart": 1590675267,
+			"dateEnd": 1590686067,
+			"name": "TestEvent4",
+			"desk": "TestEventDesk4"
+		}
+	]
+}

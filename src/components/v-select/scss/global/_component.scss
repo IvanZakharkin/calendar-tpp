@@ -1,0 +1,68 @@
+.v-select {
+  position: relative;
+  font-family: inherit;
+}
+
+.v-select,
+.v-select * {
+  box-sizing: border-box;
+}
+
+// .vs__hidden {
+//   max-height: 300px;
+//   overflow: auto;
+//   display: flex;
+//   flex-basis: 100%;
+//   flex-grow: 1;
+//   flex-wrap: wrap;
+//   position: absolute;
+//   background: #fff;
+//   z-index: 100;
+//   padding: 5px;
+//   border-radius: 3px;
+//   width: 100%;
+//   border: 1px solid rgba(60, 60, 60, 0.26);
+//   border-top: none;
+// }
+
+// .vs__button__collapse {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+// }
+
+// .v-select-custom .vs__button__collapse {
+//   display: flex;
+//   align-items: center;
+//   background-color: #f0f0f0;
+//   border: 1px solid rgba(60, 60, 60, 0.26);
+//   border-radius: 4px;
+//   color: #333;
+//   line-height: 1.4;
+//   margin: 4px 2px 0px 2px;
+//   padding: 0 0.25em;
+//   z-index: 10;
+// }
+
+// .v-select-custom .vs__actions .vs__open-indicator {
+//   display: none;
+// }
+// .v-select-custom .vs__actions {
+//   position: absolute;
+//   top: -31px;
+//   left: 85px;
+// }
+// .v-select-custom-left-140 .vs__actions {
+//   left: 140px;
+// }
+// .v-select-custom-left-80 .vs__actions {
+//   left: 80px;
+// }
+// .v-select-custom .vs__actions::after {
+//   content: "+ Добавить";
+//   color: #4162a9;
+//   display: block;
+// }
+// .v-select-custom .vs__selected_hidden {
+//   display: none;
+// }

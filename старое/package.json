@@ -1,0 +1,41 @@
+{
+  "name": "todo-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "core-js": "^3.6.4",
+    "json-server": "^0.16.1",
+    "moment-timezone": "^0.5.31",
+    "pug": "^2.0.4",
+    "simple-vue-validator": "^0.16.0",
+    "vue": "^2.6.11",
+    "vue-custom-scrollbar": "^1.2.0",
+    "vue-router": "^3.1.6",
+    "vue-search-select": "^2.9.3",
+    "vue-select": "^3.10.3",
+    "vue-yandex-maps": "^0.10.8",
+    "vue2-editor": "^2.10.2",
+    "vuex": "^3.3.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.19.1",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

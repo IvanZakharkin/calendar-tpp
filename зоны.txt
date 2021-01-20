@@ -1,0 +1,108 @@
+{
+    "name": "Asia/Anadyr",
+    "offset": -720
+  },
+  {
+    "name": "Asia/Barnaul",
+    "offset": -420
+  },
+  {
+    "name": "Asia/Chita",
+    "offset": -540
+  },
+  {
+    "name": "Asia/Irkutsk",
+    "offset": -480
+  },
+  {
+    "name": "Asia/Kamchatka",
+    "offset": -720
+  },
+  {
+    "name": "Asia/Khandyga",
+    "offset": -540
+  },
+  {
+    "name": "Asia/Krasnoyarsk",
+    "offset": -420
+  },
+  {
+    "name": "Asia/Magadan",
+    "offset": -660
+  },
+  {
+    "name": "Asia/Novokuznetsk",
+    "offset": -420
+  },
+  {
+    "name": "Asia/Novosibirsk",
+    "offset": -420
+  },
+  {
+    "name": "Asia/Omsk",
+    "offset": -360
+  },
+  {
+    "name": "Asia/Sakhalin",
+    "offset": -660
+  },
+  {
+    "name": "Asia/Srednekolymsk",
+    "offset": -660
+  },
+  {
+    "name": "Asia/Tomsk",
+    "offset": -420
+  },
+  {
+    "name": "Asia/Ust-Nera",
+    "offset": -600
+  },
+  {
+    "name": "Asia/Vladivostok",
+    "offset": -600
+  },
+  {
+    "name": "Asia/Yakutsk",
+    "offset": -540
+  },
+  {
+    "name": "Asia/Yekaterinburg",
+    "offset": -300
+  },
+  {
+    "name": "Europe/Astrakhan",
+    "offset": -240
+  },
+  {
+    "name": "Europe/Kaliningrad",
+    "offset": -120
+  },
+  {
+    "name": "Europe/Kirov",
+    "offset": -180
+  },
+  {
+    "name": "Europe/Moscow",
+    "offset": -180
+  },
+  {
+    "name": "Europe/Samara",
+    "offset": -240
+  },
+  {
+    "name": "Europe/Saratov",
+    "offset": -240
+  },
+  {
+    "name": "Europe/Simferopol",
+    "offset": -180
+  },
+  {
+    "name": "Europe/Ulyanovsk",
+    "offset": -240
+  },
+  {
+    "name": "Europe/Volgograd",
+    "offset": -240
+  }
