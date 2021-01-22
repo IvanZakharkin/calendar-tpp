@@ -7,10 +7,26 @@
 		.bcalendar__schedule-event-name
 			.bcalendar__schedule-event-name-circle(:style="`background: ${calendar.color}red`")
 			.bcalendar__schedule-event-name-text {{event.name}}
+		.bcalendar__schedule-event-btns.ml-3
+			button.btn.calendar-popup-event-detail__btn(
+				type='button', 
+				data-dismiss='modal'
+				@click="deleteEvent(event.id)"
+			)
+				i.far.fa-trash-alt
+			button.btn.calendar-popup-event-detail__btn(
+				type='button'
+				@click="getEventForEdit(event.id)"
+			)
+				i.fas.fa-pencil-alt
+			a.btn.calendar-popup-event-detail__btn(
+				:href="link"
+			)
+				i.fas.fa-link
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -65,7 +81,20 @@ export default {
         this.todayMonth === new Date(this.event.dateStart * 1000).getMonth() &&
         this.todayYear === new Date(this.event.dateStart * 1000).getFullYear()
       );
-    }
+    },
+    link() {
+			// return `${location.origin}${this.event.detail_url}`;
+			return this.event.detail_url;
+		}
+  },
+  methods: {
+    ...mapActions(["getEventForEdit", "deleteEvent"]),
+    editEvent(){
+			this.getEventForEdit(this.event.id);
+		},
+		deleteCurrentEvent() {
+			this.deleteEvent(this.event.id);
+		}
   }
 };
 </script>

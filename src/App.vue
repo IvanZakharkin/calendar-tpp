@@ -34,12 +34,9 @@
               i.far.fa-question-circle
             button.btn.calendar-page__btn-icon
               i.fas.fa-cog
-            //- select.dropdown.calendar-page__view(v-model="displayType")
-            //-   option(value="week" selected) Неделя
-            //-   option(value="schedule") Расписание
             v-select(
               v-model="displayType"
-              :options="[{label: 'Неделя', code: 'week'}, {label: 'Расписание', code: 'schedule'}]")
+              :options="[{label: 'Неделя', code: 'week'}, {label: 'Расписание', code: 'schedule'}, {label: 'Рабочие дни', code: 'workingDays'}]")
       .calendar-page__row
         .calendar-page__col-left
           date-picker
@@ -114,7 +111,7 @@ export default {
         "Ноябрь",
         "Декабрь"
       ],
-      displayType: { label: "Неделя", code: "week" }
+      displayType: {label: 'Рабочие дни', code: 'workingDays'}
     };
   },
   computed: {

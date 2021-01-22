@@ -1,6 +1,6 @@
 <template lang="pug">
   .bcalendar
-    .bcalendar__view-week-days(v-if="displayType === 'week'")
+    .bcalendar__view-week-days(v-if="displayType === 'week' || displayType === 'workingDays'")
       .bcalendar__days
         full-calendar-day(
           v-for="(date, index) in datesInWeek"
@@ -75,14 +75,33 @@ export default {
       shownPopapEventEdit: state => state.calendar.shownPopapEventEdit,
       shownPopapDetailsEvent: state => state.calendar.shownPopapDetailsEvent
     }),
+    // datesInWeek_() {
+    //   let year = this.year;
+    //   let month = this.month;
+    //   let day = this.day;
+    //   let dayInWeek = new Date(year, month, day).getDay();
+    //   if (dayInWeek === 0) dayInWeek = 7;
+    //   const datesInWeek = new Array(7).fill(0);
+    //   for (let i = 0; i < 7; i += 1) {
+    //     const date = new Date(year, month, day - dayInWeek + 1 + i);
+    //     datesInWeek[i] = {
+    //       year: date.getFullYear(),
+    //       month: date.getMonth(),
+    //       day: date.getDate(),
+    //       daysWeek: DAYS_WEEK[date.getDay()]
+    //     };
+    //   }
+    //   return datesInWeek;
+    // },
     datesInWeek() {
+      let countDays = this.displayType === 'week' ? 7 : 5;
       let year = this.year;
       let month = this.month;
       let day = this.day;
       let dayInWeek = new Date(year, month, day).getDay();
       if (dayInWeek === 0) dayInWeek = 7;
-      const datesInWeek = new Array(7).fill(0);
-      for (let i = 0; i < 7; i += 1) {
+      const datesInWeek = new Array(countDays).fill(0);
+      for (let i = 0; i < countDays; i += 1) {
         const date = new Date(year, month, day - dayInWeek + 1 + i);
         datesInWeek[i] = {
           year: date.getFullYear(),

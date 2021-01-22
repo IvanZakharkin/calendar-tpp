@@ -14,9 +14,9 @@ import calendar from "./modules/calendar.js";
 
 
 // export const store = new Vuex.Store({
-// 	modules: {
-// 		calendar
-// 	}
+//     modules: {
+//         calendar
+//     }
 // });
 
 window.Vuex = Vuex;

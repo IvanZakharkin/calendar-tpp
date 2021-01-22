@@ -610,7 +610,7 @@ export default {
     this.date = this.dateStartMoment.format("DD.MM.YYYY");
     this.eventName = this.event.name;
     this.eventDesc = this.event.desc;
-    this.link = this.event.link;
+    this.link = !this.event.link ? '' : this.event.link;
 
     // this.registration = this.event.registration
     // .filter(el => !!el.VALUE)

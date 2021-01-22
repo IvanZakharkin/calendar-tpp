@@ -14,21 +14,11 @@
 		.calendar-popup-event-detail__desk
 			p {{event.desk}}
 		.text-right.p-2
-			button.btn.calendar-popup-event-detail__btn(
-				type='button', 
-				data-dismiss='modal'
-				@click="deleteCurrentEvent()"
-			)
+			button.btn.calendar-popup-event-detail__btn(type='button', data-dismiss='modal' @click="deleteCurrentEvent()")
 				i.far.fa-trash-alt
-			button.btn.calendar-popup-event-detail__btn(
-				type='button'
-				@click="editEvent()"
-			)
+			button.btn.calendar-popup-event-detail__btn(type='button' @click="editEvent()")
 				i.fas.fa-pencil-alt
-			a.btn.calendar-popup-event-detail__btn(
-				:href="link"
-				type='button'
-			)
+			a.btn.calendar-popup-event-detail__btn(:href="link")
 				i.fas.fa-link
 </template>
 
@@ -40,11 +30,7 @@ export default {
 		...mapActions(["getEventForEdit", "deleteEvent"]),
 		editEvent(){
 			this.getEventForEdit(this.event.id);
-			// this.updateEditEvent({id: this.detailsEvent.id});
 			this.closePopapDetailsEvents();
-			
-			// this.showPopapEventFullScreen();
-			// $('#calendar-edit-event-popup').modal('show');
 		},
 		deleteCurrentEvent() {
 			this.deleteEvent(this.event.id);
@@ -63,7 +49,8 @@ export default {
 			return `top: ${this.detailsEvent.topCoordinate}px; left: ${this.detailsEvent.leftCoordinate}px;`;
 		},
 		link() {
-			return `${location.origin}${this.event.detail_url}`;
+			// return `${location.origin}${this.event.detail_url}`;
+			return this.event.detail_url;
 		}
 	},
 	mounted() {

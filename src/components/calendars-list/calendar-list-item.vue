@@ -28,11 +28,11 @@ export default {
   },
   watch: {
     check: function(val) {
-      if (this.checkedCalendars.length >= 3 && val) {
-      } else {
+      // if (this.checkedCalendars.length >= 3 && val) {
+      // } else {
         this.checkCalendar({ id: this.calendar.id, check: val });
         this.getEventsInWeek();
-      }
+      // }
       
     }
   },
@@ -51,10 +51,10 @@ export default {
       this.getRoomForEdit(this.calendar.id);
     },
     preventClick(event) {
-      if (this.checkedCalendars.length >= 3 && !this.check) {
-        event.preventDefault();
-        $(this.$refs.popover).popover('show')
-      }
+    //   if (this.checkedCalendars.length >= 3 && !this.check) {
+    //     event.preventDefault();
+    //     $(this.$refs.popover).popover('show')
+    //   }
     },
   },
   props: {
