@@ -8,7 +8,7 @@
       )
     button.btn.calendar-page__btn-gray(
       v-if="canEditCalendars"
-      @click="showPopapAddingCalendar(); changeEditingRoom(false)"
+      @click="showPopapAddingCalendar();"
     ) + Добавить календарь
 </template>
 

@@ -107,7 +107,8 @@ export default {
           year: date.getFullYear(),
           month: date.getMonth(),
           day: date.getDate(),
-          daysWeek: DAYS_WEEK[date.getDay()]
+          // daysWeek: DAYS_WEEK[date.getDay()],
+          daysWeek: this.$moment(date).format('dddd')
         };
       }
       return datesInWeek;
@@ -116,7 +117,7 @@ export default {
   methods: {
   },
   mounted() {
-    $('.scroll-area').scrollTop(300);
+    $('.scroll-area').scrollTop(380);
   }
 };
 </script>

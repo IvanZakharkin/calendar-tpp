@@ -149,10 +149,7 @@ export default {
       if(this.event.status.id) {
         switch (this.event.status.externalId) {
           case "application":
-            background = `
-              background: linear-gradient(${this.calendar.color} 50%, #D3D3D3 50%);
-              background-size: 100% 20px;
-            `;
+            background = `background: linear-gradient(${this.calendar.color} 50%, #D3D3D3 50%); background-size: 100% 20px;`;
             break;
           case "plan": 
             background = `background: ${this.calendar.color}`;

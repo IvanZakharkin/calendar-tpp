@@ -12,7 +12,7 @@
           )
         .checkbox-calendar__fake(:style="{background: calendar.color}")
         .checkbox-calendar__title {{calendar.name}}
-      button.btn.calendar-page__calendars-list-item-btn(@click="editRoom();changeEditingRoom(true)")
+      button.btn.calendar-page__calendars-list-item-btn(@click="editRoom();")
         i.fas.fa-cog
 
 </template>
@@ -47,8 +47,8 @@ export default {
       "changeEditingRoom",
     ]),
     editRoom() {
-      // this.showPopapAddingCalendar();
-      this.getRoomForEdit(this.calendar.id);
+      this.showPopapAddingCalendar();
+      // this.getRoomForEdit(this.calendar.id);
     },
     preventClick(event) {
     //   if (this.checkedCalendars.length >= 3 && !this.check) {

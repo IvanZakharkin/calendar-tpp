@@ -1,5 +1,6 @@
 import moment from "moment-timezone";
-import { EMPTY_EVENT, EMPTY_ROOM } from "../../components/const.js"
+import { EMPTY_EVENT, EMPTY_ROOM } from "../../components/const.js";
+import { modalPopup } from "../../functions.js";
 import {
     events as fEvents,
     calendars as fCalendars,
@@ -15,10 +16,13 @@ const calendar = {
         todayMonth: 0,
         day: 0,
         events: [
-            // ...fEvents
+            ...fEvents
         ],
         calendars: [
-            // ...fCalendars
+            ...fCalendars
+        ],
+        timeZones: [
+            ...fTimezones
         ],
         createdEvent: {
             create: false,
@@ -57,13 +61,34 @@ const calendar = {
             description: "",
             email: "",
             fileContract: "",
-            id: "",
+            id: "123",
             imagesRooms: [],
             moderators: [],
             name: "",
             numberRoom: "",
             phones: [],
             timeZone: 0,
+            servicesList: [{
+                    iblock_id: "31",
+                    measure: "шт",
+                    name: "Питьевая вода бутилированная б/г 0,33 л",
+                    product_id: "1864623",
+                    product_price: "5000.00",
+                    product_quantity: "100",
+                    ratio: 1,
+                    currency: "RUB",
+                },
+                {
+                    iblock_id: "31",
+                    measure: "шт",
+                    name: "Питьевая вода бутилированная б/г 0,33 л",
+                    product_id: "186462312323",
+                    product_price: "5000.00",
+                    product_quantity: "100",
+                    ratio: 1,
+                    currency: "RUB",
+                },
+            ]
         },
         userInfo: [{
             code: 123,
@@ -79,9 +104,7 @@ const calendar = {
             room: "",
             show: false
         },
-        timeZones: [
-            // ...fTimezones
-        ],
+
         statusList: [{
                 externalId: "plan",
                 id: "1509",
@@ -230,7 +253,29 @@ const calendar = {
         canEditEvents: 1,
         loadings: {
             savingEvent: false
-        }
+        },
+        measuresList: [{
+                externalId: "l",
+                id: "1504",
+                value: "литры"
+            },
+            {
+                externalId: "kg",
+                id: "1505",
+                value: "килограммы"
+            },
+        ],
+        currencyList: [{
+                externalId: "dollars",
+                id: "150123",
+                value: "доллары"
+            },
+            {
+                externalId: "rub",
+                id: "150123",
+                value: "рубли"
+            },
+        ]
     },
     actions: {
         getEventsInWeek({ getters, commit }) {
@@ -292,13 +337,23 @@ const calendar = {
                 enctype: 'multipart/form-data',
                 data: getters.dataEventForSend,
                 success: function(response) {
-
-                    commit('resetStateCreatedEvent');
-                    commit('closePopapEventFullScreen');
-                    dispatch("getEventsInWeek");
+                    if (response.success) {
+                        commit('resetStateCreatedEvent');
+                        commit('closePopapEventFullScreen');
+                        dispatch("getEventsInWeek");
+                    } else {
+                        modalPopup({
+                            title: 'Ошибка при сохранении события',
+                            content: response.errors
+                        });
+                    }
                     state.loadings.savingEvent = false;
                 },
                 errors: function() {
+                    modalPopup({
+                        title: 'Ошибка при сохранении события',
+                        content: 'Повторите попытку позже'
+                    });
                     state.loadings.savingEvent = false;
                 }
             });
@@ -318,11 +373,19 @@ const calendar = {
                         commit('closePopapAddingCalendar');
                         dispatch("getCalendars");
                     } else {
-                        alert(`${response.error}`);
+                        modalPopup({
+                            title: 'Ошибка при сохранении календаря',
+                            content: response.errors
+                        });
+                        // alert(`${response.error}`);
                     }
                 },
                 error: function() {
-                    alert("ошибка при получении ответа");
+                    modalPopup({
+                        title: 'Ошибка при сохранении календаря',
+                        content: 'Повторите попытку позже'
+                    });
+                    // alert("ошибка при получении ответа");
                 }
             });
         },
@@ -418,6 +481,7 @@ const calendar = {
             formData.append("timeZone", `${state.event.timeZone}`);
             formData.append("template", `${state.event.template}`);
             formData.append("link", `${state.event.link}`);
+            formData.append("public", `${state.event.public}`);
             console.log(state.event.registration);
             state.event.registration.forEach((el, index) => {
                 formData.append(`registration[${index}]`, el);
@@ -653,8 +717,8 @@ const calendar = {
 
         },
         closePopapEventFullScreen(state) {
-            state.event = EMPTY_EVENT;
             $('#popup-event-fullscreen').modal('hide');
+            state.event = EMPTY_EVENT;
             state.shownPopapEventFullScreen = false;
         },
         showPopapDetailsEvents(state) {

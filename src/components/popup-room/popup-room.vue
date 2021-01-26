@@ -1,5 +1,4 @@
 <template lang="pug">
-
         form.popup-add-room#popup-add-room.was(
           @submit="saveRoom($event)"
         )
@@ -52,11 +51,12 @@
                       label.popup-add-room__option-file 
                         .popup-add-room__option-file-title {{fileContractName}}
                         input.popup-add-room__option-file-hidden(
-                                            ref="fileContractRef"
-                                            type="file"
-                                            @change="handleFileContractUpload()"
-                                        )
+                          ref="fileContractRef"
+                          type="file"
+                          @change="handleFileContractUpload()"
+                        )
                       button.btn.popup-add-room__option-file-btn(
+                        type="button"
                         @click="deleteFileContract()"
                          v-if="fileContract"
                         )
@@ -70,25 +70,48 @@
                             button.dropdown-item(
                               type="button"
                               href='#'
-                              v-for="(service, index) in services"
+                              v-for="service in servicesList"
                               :key="`service-${index}`"
                               @click="addService(service)"
-                            ) {{service.title}}
+                            ) {{service.name}}
                       
                       .popup-add-room__option-services
-                        ul.popup-add-room__option-services-list
-                          li.popup-add-room__option-service(
-                            v-for="(selectService, index) in selectedServices"
-                            :key="`selectService-${index}`"
+                        table.table.table-striped.popup-add-room__option-service
+                          colgroup
+                            col(width="5%")
+                            col(width="50%")
+                            col(width="20%")
+                            col(width="20%")
+                            col(width="5%")
+                          tr(
+                            v-for="(service, index) in servicesList"
+                            :key="`service-${service.product_id}`"
                           )
-                            .popup-add-room__option-service-num {{selectService.num}}
-                            .popup-add-room__option-service-title {{selectService.title}}   
-                            .popup-add-room__option-service-value {{selectService.value}}
-                            .popup-add-room__option-service-price {{selectService.price}}
-                            button.btn.popup-add-room__option-service-delete(
-                              @click="deleteService(selectService)"
-                            )
-                              i.fas.fa-times
+                            td {{index + 1}}
+                            td {{service.name}} 
+                            td {{service.product_price}} {{service.currency}}
+                            td {{service.ratio}} {{service.measure}}
+                            td 
+                              button.btn.popup-add-room__option-service-delete(
+                                type="button"
+                                @click="deleteService(selectService)"
+                              )
+                                i.fas.fa-times
+                        popup-room-services-form
+                        //- ul.popup-add-room__option-services-list
+                        //-   li.popup-add-room__option-service(
+                        //-     v-for="service in servicesList"
+                        //-     :key="`service-${service.product_id}`"
+                        //-   )
+                        //-     .popup-add-room__option-service-num {{service.product_id}}
+                        //-     .popup-add-room__option-service-title {{service.name}}   
+                        //-     .popup-add-room__option-service-value {{}}
+                        //-     .popup-add-room__option-service-price {{service.product_price}}
+                        //-     button.btn.popup-add-room__option-service-delete(
+                        //-       type="button"
+                        //-       @click="deleteService(selectService)"
+                        //-     )
+                        //-       i.fas.fa-times
                         
 
                     .popup-add-room__option
@@ -107,6 +130,7 @@
                             )
                             img.popup-add-room__img(:src="roomImage.src")
                             button.popup-add-room__btn-delete-img(
+                              type="button"
                               @click="deleteUploadedImage(index)"
                             )
                               i.fas.fa-times
@@ -114,6 +138,7 @@
                           .popup-add-room__pic(v-for="roomImage in imagesRooms")
                             img.popup-add-room__img(:src="roomImage")
                             button.popup-add-room__btn-delete-img(
+                              type="button"
                               @click="deleteImage(index)"
                             )
                               i.fas.fa-times
@@ -126,7 +151,7 @@
                             ref="filesImage"
                           )
                           .popup-add-room__file-img-icon +
-                .col-4.pl-5
+                .col-4
                   .popup-add-room__info-title Контактные данные
                   .popup-add-room__options
                     .popup-add-room__option.popup-add-room__option_vertical
@@ -178,7 +203,8 @@
 </template>
 
 <script>
-import vSelect from "./v-select/components/Select.vue";
+import vSelect from "../v-select/components/Select.vue";
+import popupRoomServicesForm from "./popup-room-service-form.vue"
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 
 export default {
@@ -193,51 +219,14 @@ export default {
       fileContractServer: false,
       imagesRooms: [],
       imagesRoomsFiles: [],
-      uploadedImagesRoom: [
-        // {
-        //   code: "22574265",
-        //   src: "/img/img2.jpg"
-        // },
-        // {
-        //   code: "22574265",
-        //   src: "/img/img3.jpg"
-        // }
-      ],
+      uploadedImagesRoom: [],
       desc: "",
       color: "",
-      responsiblePersons: [
-        // {
-        //   code: 1,
-        //   label: "Федор Петров"
-        // },
-        // {
-        //   code: 2,
-        //   label: "Иван Иванов"
-        // }
-      ],
+      responsiblePersons: [],
       selectedResponsiblePersons: [],
       email: "",
       phone: "",
-      services: [
-        {
-          num: "SE-RU-12361",
-          title: "Аренда помещения Конгресс-центра",
-          price: "20000 Р",
-          value: "1 час"
-        },
-        {
-          num: "SE-RU-12362",
-          title: "Питьевая вода бутилированная б/г  0,33 л",
-          price: "5000 Р",
-          value: "20 шт"
-        },
-        {
-          num: "SE-RU-12363",
-          title: "Уборка помещения с чистящ. средствам",
-          price: "3 000 Р",
-          value: "1 час"
-        }
-      ],
+      servicesList: [],
       selectedServices: [],
       id: null,
       address: "",
@@ -267,11 +256,11 @@ export default {
     },
     saveRoom(event) {
       event.preventDefault();
-      if (!this.coordinates || this.address != this.editRoom.address) {
-        this.geocode(false);
-      } else {
+      // if (!this.coordinates || this.address != this.editRoom.address) {
+        // this.geocode(false);
+      // } else {
         this.sendNewRoom(this.newRoom);
-      }
+      // }
       this.resetEditRoom();
     },
     deleteCurRoom() {
@@ -337,8 +326,11 @@ export default {
       });
     },
     init() {
-      var suggestView1 = new ymaps.SuggestView("room-address");
-      // this.geocode;
+      const suggestView = new ymaps.SuggestView("room-address");
+      const vm = this;
+      suggestView.events.add('select',function(event) {
+        vm.address = event.get('item').value;
+      });
     },
     geocode(showMap) {
       // function geocodeGo() {
@@ -383,7 +375,7 @@ export default {
             vm.validateError = hint;
             vm.locationValidate = true;
           } else {
-            vm.address = request;
+            // vm.address = request;
             vm.locationValidate = false;
             vm.coordinates = obj.geometry.getCoordinates().join(",");
             if (showMap) {
@@ -403,7 +395,8 @@ export default {
     }
   },
   components: {
-    vSelect
+    vSelect,
+    popupRoomServicesForm
   },
   computed: {
     ...mapState({
@@ -411,6 +404,8 @@ export default {
       editRoom: state => state.calendar.editRoom,
       shownPopapAddingCalendar: state => state.calendar.shownPopapAddingCalendar,
       editingRoom: state => state.calendar.editingRoom,
+      measuresList: state => state.calendar.measuresList,
+      currencyList: state => state.calendar.currencyList
     }),
     ...mapGetters([
       "getCurrentTimeZone",
@@ -479,6 +474,7 @@ export default {
       this.email = this.editRoom.email;
       this.color = this.editRoom.color;
       this.selectedResponsiblePersons = this.editRoom.moderators;
+      this.servicesList = this.editRoom.servicesList;
       if(!this.editRoom.timeZone) {
         this.selectedTimezone = {
           code: this.getCurrentTimeZone.id,
@@ -511,64 +507,12 @@ export default {
 </script>
 
 <style >
-.v-select-custom-left-140 .vs__actions {
-  left: 140px;
-}
-
-.vs__hidden {
-  max-height: 300px;
-  overflow: auto;
-  display: flex;
-  flex-basis: 100%;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  position: absolute;
-  background: #fff;
-  z-index: 100;
-  padding: 5px;
-  border-radius: 3px;
-  width: 100%;
-  border: 1px solid rgba(60, 60, 60, 0.26);
-  border-top: none;
-}
-
-.vs__button__collapse {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.v-select-custom .vs__button__collapse {
-  display: flex;
-  align-items: center;
-  background-color: #f0f0f0;
-  border: 1px solid rgba(60, 60, 60, 0.26);
-  border-radius: 4px;
-  color: #333;
-  line-height: 1.4;
-  margin: 4px 2px 0px 2px;
-  padding: 0 0.25em;
-  z-index: 10;
-}
-
-.v-select-custom .vs__actions .vs__open-indicator {
-  display: none;
-}
-/* .v-select-custom .vs__actions {
-  position: absolute;
-  top: -31px;
-  left: 85px;
-} */
-
 .v-select-custom-room .vs__actions {
   font-size: 14px;
-  top: -28px;
+  top: -34px;
   left: 100px;
 }
 
-.v-select-custom .vs__selected_hidden {
-  display: none;
-}
 .v-select-custom-room .vs__dropdown-toggle {
   padding-right: 90px;
 }

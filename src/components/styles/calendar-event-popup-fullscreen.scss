@@ -12,60 +12,49 @@
     min-height: 655px;
     display: flex;
     flex-direction: column;
-
-    &__header  {
+    &__header {
         position: relative;
-        // padding-bottom: 15px;
-        border-bottom: 1px solid #e1e1e1;
-        margin-bottom: 15px;
-
+        margin-bottom: 25px;
     }
-
     &__textarea {
         width: 100%;
         height: 100px;
     }
-
     &__close-btn {
         background-color: #fff;
         border: none;
-
         &:focus {
             outline: none;
         }
-
     }
     &__close-btn-icon {
         fill: #656875;
         width: 13px;
         height: 13px;
     }
-
     &__name {
         height: 100%;
     }
-
     &__input-name {
         border: none;
+        border-bottom: 1px solid #e1e1e1;
         background-color: #fff;
-        padding: 5px 0;
-        font-size: 17px;
+        padding: 5px;
+        font-size: 19px;
         color: #656875;
         width: 100%;
         height: 100%;
-
         &:focus {
             outline: none;
+            border-bottom: 2px solid #2164b1;
         }
     }
-
     &__nav {
         display: flex;
         border-bottom: 1px solid #e1e1e1;
         padding: 15px 0;
         margin-bottom: 20px;
     }
-
     &__nav-item {
         margin-right: 20px;
         color: #2164b1;
@@ -74,9 +63,6 @@
             margin-right: 0px;
         }
     }
-
-
-
     &__row {
         display: flex;
         margin-bottom: 20px;
@@ -90,20 +76,15 @@
         position: relative;
         // align-items: center;
     }
-
     &__row_location {
         width: 100%;
     }
-
     &__row-item {
         margin-right: 15px;
-
         &:last-child {
             margin-right: 0px;
         }
     }
-
-
     &__field {
         // padding: 10px;
         background: #f0efef;
@@ -112,31 +93,25 @@
         color: #656875;
         border-radius: 0.25em;
         // height: 35px;
-
         &_timezone {
             width: 150px;
-            
         }
     }
     &__conf {
         display: inline-block;
         margin-bottom: 10px;
     }
-
     &__row {
         display: flex;
         margin-bottom: 10px;
         position: relative;
         align-items: center;
     }
-
     &__row_location {
         width: 100%;
     }
-
     &__row-item {
         margin-right: 15px;
-
         &:last-child {
             margin-right: 0px;
         }
@@ -148,94 +123,74 @@
             font-size: 14px;
             color: #a5a9b9;
             // padding-left: 25px;
-
             &:before {
                 border-color: #a5a9b9;
             }
         }
-
     }
-
     &__options-title {
         font-size: 14px;
         color: #a5a9b9;
-        
     }
-
     &__input {
         width: 100%;
     }
-
     &__guest-title {
         font-size: 14px;
         color: #656875;
         margin-bottom: 10px;
     }
-
     &__btn-save {
         background-color: #2164b1;
         color: #fff;
-
         &:hover {
             background-color: #195191;
-            color: #fff; 
+            color: #fff;
         }
     }
-
     &__icon {
         position: absolute;
         left: -25px;
         top: 13px;
     }
-
     &__desk {
         background: #f0efef;
-
         .ck-toolbar {
             background: #f0efef;
         }
     }
-
     &__input {
         width: 100%;
     }
-
     &__guest-title {
         font-size: 14px;
         color: #656875;
         margin-bottom: 10px;
     }
-
     &__btn-save {
         background-color: #2164b1;
         color: #fff;
-
         &:hover {
             background-color: #195191;
-            color: #fff; 
+            color: #fff;
         }
     }
-
     &__icon {
         position: absolute;
         left: -25px;
         top: 13px;
     }
-
-    &__close{
+    &__close {
         position: absolute;
         right: 30px;
         top: 20px
     }
-
     &__options-title {
         margin-right: 10px;
     }
-
     &__timezone {
         width: 150px;
     }
-
     &__add-participant {
         display: flex;
         border: 1px solid #e0e0e0;
@@ -254,12 +209,10 @@
         border: none;
         padding: 0 5px;
         flex: 1;
-
         &:focus {
             outline: none;
         }
     }
-
     &__to-excel {
         display: flex;
         align-items: center;

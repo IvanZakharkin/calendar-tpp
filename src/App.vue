@@ -14,18 +14,18 @@
         .calendar-page__col-right.d-flex.justify-content-between
           .calendar-page__choise-date
             .calendar-page__choise-date-item
-            button.btn.calendar-page__btn-gray.px-3(
-              @click="toggleCurrentWeek('prev')"
-            )
-              i.fas.fa-chevron-left
+              button.btn.calendar-page__btn-gray.px-3(
+                @click="toggleCurrentWeek('prev')"
+              )
+                i.fas.fa-chevron-left
             .calendar-page__choise-date-item
-            button.btn.calendar-page__btn-gray(@click="goToCurrentDate") Сегодня
+              button.btn.calendar-page__btn-gray(@click="goToCurrentDate") Сегодня
             .calendar-page__choise-date-item
-            button.btn.calendar-page__btn-gray.px-3(
-              @click="toggleCurrentWeek('next')"
-            )
-              i.fas.fa-chevron-right
-            .calendar-page__choise-date-item
+              button.btn.calendar-page__btn-gray.px-3(
+                @click="toggleCurrentWeek('next')"
+              )
+                i.fas.fa-chevron-right
+          .calendar-page__selected-date
             span {{months[month]}} {{year}} год
           .d-flex.justify-content-end
             button.btn.calendar-page__btn-icon
@@ -45,21 +45,21 @@
           full-calendar(
             :displayType="displayType.code"
           )
-      .modal.popup-fullscreen#popup-event-fullscreen
+      .modal.popup-fullscreen#popup-event-fullscreen.fade
         .modal-dialog.popup-fullscreen-dialog
           .modal-content.popup-fullscreen-content
             .text-center(v-if="!shownPopapEventFullScreen")
               .spinner-border(role='status')
                 span.sr-only Loading...    
             calendar-event-popup-fullscreen(v-if="shownPopapEventFullScreen")
-      .modal.popup-fullscreen#popup-room
+      .modal.popup-fullscreen#popup-room.fade
         .modal-dialog.popup-fullscreen-dialog
           .modal-content.popup-fullscreen-content
             .text-center(v-if="!shownPopapAddingCalendar")
               .spinner-border(role='status')
                 span.sr-only Loading...
-            popup-add-room(v-if="shownPopapAddingCalendar")
-      .modal.popup-fullscreen#calendar-edit-event-popup
+            popup-room(v-if="shownPopapAddingCalendar")
+      .modal.popup-fullscreen#calendar-edit-event-popup.fade
         .modal-dialog.popup-fullscreen-dialog
           .modal-content.popup-fullscreen-content
             .text-center(v-if="!shownPopapEventEdit")
@@ -76,7 +76,7 @@ import FullCalendar from "./components/full-calendar/full-calendar.vue";
 import calendarsList from "./components/calendars-list/calendars-list.vue";
 import calendarEventPopupFullscreen from "./components/calendar-event-popup-fullscreen.vue";
 import calendarEventEditPopup from "./components/calendar-event-edit-popup.vue";
-import popupAddRoom from "./components/popup-add-room.vue";
+import popupRoom from "./components/popup-room/popup-room.vue";
 import ymaps from "./components/ymaps.vue";
 import vSelect from "./components/v-select/components/Select.vue";
 import moment from "moment-timezone";
@@ -90,7 +90,7 @@ export default {
     FullCalendar,
     calendarsList,
     calendarEventPopupFullscreen,
-    popupAddRoom,
+    popupRoom,
     ymaps,
     calendarEventEditPopup,
     vSelect

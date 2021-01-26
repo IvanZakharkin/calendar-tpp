@@ -47,13 +47,12 @@
               v-model="newEvent"
             )
     .calendar-event-popup-fullscreen__event-content(v-show="showContentEvent")
-      .row.calendar-event-popup-fullscreen__header
-        .col-12
-          .calendar-event-popup-fullscreen__name
-            input.calendar-event-popup-fullscreen__input-name(
-              v-model="eventName"
-              placeholder="Добавьте название"
-              )
+      .calendar-event-popup-fullscreen__header
+        .calendar-event-popup-fullscreen__name
+          input.calendar-event-popup-fullscreen__input-name(
+            v-model="eventName"
+            placeholder="Добавьте название"
+            )
       .calendar-event-popup-fullscreen__row
         .calendar-event-popup-fullscreen__row-item
           input.btn.text-left.calendar-event-popup-fullscreen__field(
@@ -81,6 +80,10 @@
                   v-for="timeZone in timeZonesForSelect"
                   @click="selectedTimezone = timeZone"
                   ) {{timeZone.label}}
+        .calendar-event-popup-fullscreen__row-item.ml-4
+          label.checkbox.text-muted
+            input.checkbox__input(type='checkbox' v-model="public")
+            .checkbox__title Показывать всем
       .calendar-event-popup-fullscreen__nav
         .calendar-event-popup-fullscreen__nav-item Опции
       .calendar-event-popup-fullscreen__options
@@ -153,9 +156,9 @@
     .text-right.mt-auto
         button.btn.calendar-event-popup-fullscreen__btn-save(
           v-show="!showContentPreview"
-          :disabled="eventName==='' || savingEvent"
-          
-          @click="saveEvent()"
+          :disabled="savingEvent"
+          @click="saveEvent"
+          ref="btnSaveEvent"
         )
           span.spinner-border.spinner-border-sm.mr-2(role="status" aria-hidden="true" v-show="savingEvent")
           span Сохранить
@@ -278,7 +281,8 @@ export default {
       // imagePreview: "",
       selectedParticipant: [
       ],
-      link: ''
+      link: '',
+      public: false
       
     };
   },
@@ -399,6 +403,9 @@ export default {
       this.closePopapEventFullScreen();
     },
     saveEvent() {
+      if(!this.eventName) {
+        return;
+      }
       this.updateEvent({
         dateStart: this.dateStart,
         dateEnd: this.dateEnd,
@@ -416,7 +423,8 @@ export default {
         agendas: this.agendas,
         registration: this.registration,
         hotels: this.hotels,
-        link: this.link
+        link: this.link,
+        public: this.public ? 1 : 0
       });
       this.sendEvent();
       // this.resetStateCreatedEvent();
@@ -611,7 +619,7 @@ export default {
     this.eventName = this.event.name;
     this.eventDesc = this.event.desc;
     this.link = !this.event.link ? '' : this.event.link;
-
+    this.public = !!this.event.public;
     // this.registration = this.event.registration
     // .filter(el => !!el.VALUE)
     // .map((el) => {
@@ -632,6 +640,17 @@ export default {
         code: this.getCurrentTimeZone.id,
         label: this.getCurrentTimeZone.xmlId
       };
+  },
+  mounted() {
+    // console.log(this);
+    // var vm = this;
+    // setTimeout(console.log(this.$refs), 1000);
+    $(this.$refs.btnSaveEvent).popover({
+      content: 'Укажите название события',
+      trigger: 'focus',
+      animation: true,
+      placement:'top' 
+    })
   }
 };
 </script>
