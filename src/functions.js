@@ -59,4 +59,8 @@ function modalConfirm(options) {
 };
 
 
-export { roundingMinutes, modalPopup, modalConfirm }
+function getRandomInt(min = 0, max = 100000) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+export { roundingMinutes, modalPopup, modalConfirm, getRandomInt }

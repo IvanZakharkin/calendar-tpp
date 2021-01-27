@@ -95,7 +95,7 @@
         
 
         .calendar-event-popup-fullscreen__options-row.flex-column
-            .calendar-event-popup-fullscreen__options-title.mb-2 Ответсвенный
+            .calendar-event-popup-fullscreen__options-title.mb-2 Ответственный
             .v-select-custom.v-select-custom-left-105
               vSelect(
                 v-model="selectedResponsiblePerson" :options="responsiblePerson"

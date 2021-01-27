@@ -1,6 +1,6 @@
 <template lang="pug">
         form.popup-add-room#popup-add-room.was(
-          @submit="saveRoom($event)"
+          @submit.prevent="saveRoom($event)"
         )
           button.btn.popup-add-room__btn-close(
             @click="closePopapAddingCalendar(); resetEditRoom();"
@@ -61,59 +61,7 @@
                          v-if="fileContract"
                         )
                         i.fas.fa-times
-                    .popup-add-room__option.popup-add-room__option_vertical
-                      .d-flex.align-items-center
-                        .popup-add-room__option-title.mb-0 Услуги
-                        .dropdown
-                          button.btn.popup-add-room__option-services-add(data-toggle='dropdown' type="button") + Добавить
-                          .dropdown-menu
-                            button.dropdown-item(
-                              type="button"
-                              href='#'
-                              v-for="service in servicesList"
-                              :key="`service-${index}`"
-                              @click="addService(service)"
-                            ) {{service.name}}
-                      
-                      .popup-add-room__option-services
-                        table.table.table-striped.popup-add-room__option-service
-                          colgroup
-                            col(width="5%")
-                            col(width="50%")
-                            col(width="20%")
-                            col(width="20%")
-                            col(width="5%")
-                          tr(
-                            v-for="(service, index) in servicesList"
-                            :key="`service-${service.product_id}`"
-                          )
-                            td {{index + 1}}
-                            td {{service.name}} 
-                            td {{service.product_price}} {{service.currency}}
-                            td {{service.ratio}} {{service.measure}}
-                            td 
-                              button.btn.popup-add-room__option-service-delete(
-                                type="button"
-                                @click="deleteService(selectService)"
-                              )
-                                i.fas.fa-times
-                        popup-room-services-form
-                        //- ul.popup-add-room__option-services-list
-                        //-   li.popup-add-room__option-service(
-                        //-     v-for="service in servicesList"
-                        //-     :key="`service-${service.product_id}`"
-                        //-   )
-                        //-     .popup-add-room__option-service-num {{service.product_id}}
-                        //-     .popup-add-room__option-service-title {{service.name}}   
-                        //-     .popup-add-room__option-service-value {{}}
-                        //-     .popup-add-room__option-service-price {{service.product_price}}
-                        //-     button.btn.popup-add-room__option-service-delete(
-                        //-       type="button"
-                        //-       @click="deleteService(selectService)"
-                        //-     )
-                        //-       i.fas.fa-times
-                        
-
+                    
                     .popup-add-room__option
                       input.popup-add-room__option-input.w-100(
                         placeholder="описание"
@@ -191,20 +139,22 @@
                           type="email"
                           v-model="email"
                         )
-              .text-right
-                button.btn.btn-danger.mr-3.popup-add-room__btn-save(
-                  type="button"
-                  v-show="id"
-                  @click="deleteCurRoom()"
-                ) Удалить
-                button.btn.btn-primary.popup-add-room__btn-save(
-                  type="submit"
-                ) Сохранить
+              
+            popup-room-services(@changeServicesList="changeServicesList($event)")
+            .text-right.mt-5
+              button.btn.btn-danger.mr-3.popup-add-room__btn-save(
+                type="button"
+                v-show="id"
+                @click="deleteCurRoom()"
+              ) Удалить
+              button.btn.btn-primary.popup-add-room__btn-save(
+                type="submit"
+              ) Сохранить
 </template>
 
 <script>
 import vSelect from "../v-select/components/Select.vue";
-import popupRoomServicesForm from "./popup-room-service-form.vue"
+import popupRoomServices from "./popup-room-services.vue"
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 
 export default {
@@ -255,6 +205,7 @@ export default {
       this.uploadedImagesRoom.splice(index, 1);
     },
     saveRoom(event) {
+      console.log(event);
       event.preventDefault();
       // if (!this.coordinates || this.address != this.editRoom.address) {
         // this.geocode(false);
@@ -392,11 +343,22 @@ export default {
           console.log(e);
         }
       );
+    },
+    changeServicesList(data) {
+      this.servicesList = data;
+    },
+    removeFakeIdFromServicesList() {
+      return this.servicesList.map((el) => {
+        if(el.product_id[0] === 'f') {
+          delete el.product_id;
+        }
+        return el;
+      })
     }
   },
   components: {
     vSelect,
-    popupRoomServicesForm
+    popupRoomServices
   },
   computed: {
     ...mapState({
@@ -404,7 +366,7 @@ export default {
       editRoom: state => state.calendar.editRoom,
       shownPopapAddingCalendar: state => state.calendar.shownPopapAddingCalendar,
       editingRoom: state => state.calendar.editingRoom,
-      measuresList: state => state.calendar.measuresList,
+      measuresList: state => state.calendar.measureList,
       currencyList: state => state.calendar.currencyList
     }),
     ...mapGetters([
@@ -414,6 +376,9 @@ export default {
     ]),
     imagesForSend() {
       return this.uploadedImagesRoom.map(el => el.code);
+    },
+    serviesForSend() {
+      
     },
     newRoom() {
       const formData = new FormData();
@@ -443,8 +408,10 @@ export default {
       this.phones.forEach((el, index) => {
         formData.append(`phones[${index}]`, el);
       });
-      this.selectedServices.forEach((el, index) => {
-        formData.append(`services[${index}]`, el);
+      this.servicesList.forEach((el, index) => {
+        for(let key in el) {
+          formData.append(`servicesList[${index}][${key}]`, el[key]);
+        }
       });
       this.selectedResponsiblePersons.forEach((el, index) => {
         formData.append(`moderators[${index}]`, el.code);

@@ -70,23 +70,25 @@ const calendar = {
             timeZone: 0,
             servicesList: [{
                     iblock_id: "31",
-                    measure: "шт",
+                    measure: "1504",
                     name: "Питьевая вода бутилированная б/г 0,33 л",
                     product_id: "1864623",
                     product_price: "5000.00",
                     product_quantity: "100",
                     ratio: 1,
-                    currency: "RUB",
+                    currency: "150123",
+                    type: "voting"
                 },
                 {
                     iblock_id: "31",
-                    measure: "шт",
+                    measure: "1504",
                     name: "Питьевая вода бутилированная б/г 0,33 л",
                     product_id: "186462312323",
                     product_price: "5000.00",
                     product_quantity: "100",
                     ratio: 1,
-                    currency: "RUB",
+                    currency: "150123",
+                    type: "voting"
                 },
             ]
         },
@@ -254,26 +256,22 @@ const calendar = {
         loadings: {
             savingEvent: false
         },
-        measuresList: [{
-                externalId: "l",
+        measureList: [{
                 id: "1504",
-                value: "литры"
+                name: "литры"
             },
             {
-                externalId: "kg",
                 id: "1505",
-                value: "килограммы"
+                name: "килограммы"
             },
         ],
         currencyList: [{
-                externalId: "dollars",
                 id: "150123",
-                value: "доллары"
+                name: "доллары"
             },
             {
-                externalId: "rub",
-                id: "150123",
-                value: "рубли"
+                id: "150124",
+                name: "рубли"
             },
         ]
     },
