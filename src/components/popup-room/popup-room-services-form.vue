@@ -11,17 +11,17 @@
       tr
           td
           td
-              input(type="text" class="form-control form-control-sm" placeholder="Название" v-model="service.name")
+              input(type="text" class="form-control form-control-sm" placeholder="Название" v-model="service.name" :class="{'is-invalid': !validation.name}")
           td
               .input-group.input-group-sm
-                  input.form-control(type='text' v-model="service.product_price" placeholder="Стоимость")
+                  input.form-control(type='number' v-model="service.price" placeholder="Стоимость" :class="{'is-invalid': !validation.price}")
                   .input-group-append
                     button.dropdown-toggle.btn.btn-outline-secondary(href='#' role='button' data-toggle='dropdown') {{nameCurrency}}
                     .dropdown-menu
                         button.dropdown-item(v-for="currency in currencyList" type="button" @click="changeCurrency(currency.id)") {{currency.name}}
           td
             .input-group.input-group-sm
-                  input.form-control(type='text' v-model="service.ratio" placeholder="Колличество")
+                  input.form-control(type='number' v-model="service.ratio" placeholder="Колличество" :class="{'is-invalid': !validation.ratio}")
                   .input-group-append
                     button.dropdown-toggle.btn.btn-outline-secondary(href='#' role='button' data-toggle='dropdown') {{nameMeasure}}
                     .dropdown-menu
@@ -31,6 +31,7 @@
               button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button' data-toggle='dropdown')
                 | {{ nameType }}
               .dropdown-menu
+                button.dropdown-item(type="button" @click="changeType('')") Другое
                 button.dropdown-item(type="button" v-for="type in typesList" @click="changeType(type.externalId)") {{ type.value }}
           td 
               button.px-1.btn.popup-add-room__option-service-btn(
@@ -52,12 +53,18 @@ export default {
     return {
       service: {
         name: '',
-        product_price: '',
+        price: '',
         ratio: '',
         currency: '',
         measure: '',
         type: ''
-      }
+      },
+      validation: {
+        name: true,
+        price: true,
+        ratio: true
+      },
+      nameInvalid: false
     };
   },
 
@@ -74,10 +81,31 @@ export default {
       this.service.type = type;
     },
     saveService() {
-      this.$emit('saveService', this.service);
+      this.checkValidation();
+      if(this.validationIsSuccess()) {
+        this.$emit('saveService', this.service);
+      }
     },
     cancelService() {
       this.$emit('cancelService');
+    },
+    checkValidation() {
+      for(let field in this.validation) {
+        if(!this.service[field]) {
+          this.validation[field] = false;
+        } else {
+          this.validation[field] = true;
+        }
+      }
+    },
+    validationIsSuccess() {
+      let result = true;
+      for(let field in this.validation) {
+        if(!this.validation[field]) {
+          return result = false;
+        }
+      }
+      return result;
     },
   },
   props: {
@@ -106,11 +134,11 @@ export default {
     }),
     nameCurrency() {
       if(!this.service.currency) return '';
-      return this.currencyList.filter(el => el.id === this.service.currency)[0].name;
+      return this.currencyList.filter(el => String(el.id) === String(this.service.currency))[0].name;
     },
     nameMeasure() {
       if(!this.service.measure) return '';
-      return this.measuresList.filter(el => el.id === this.service.measure)[0].name;
+      return this.measuresList.filter(el => String(el.id) === String(this.service.measure))[0].name;
     },
     nameType() {
       if(!this.service.type) return 'Другое';

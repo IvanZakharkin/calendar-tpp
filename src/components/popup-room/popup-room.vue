@@ -347,14 +347,6 @@ export default {
     changeServicesList(data) {
       this.servicesList = data;
     },
-    removeFakeIdFromServicesList() {
-      return this.servicesList.map((el) => {
-        if(el.product_id[0] === 'f') {
-          delete el.product_id;
-        }
-        return el;
-      })
-    }
   },
   components: {
     vSelect,
@@ -378,7 +370,12 @@ export default {
       return this.uploadedImagesRoom.map(el => el.code);
     },
     serviesForSend() {
-      
+      return this.servicesList.map((el) => {
+        if(el.id[0] === 'f') {
+          delete el.id;
+        }
+        return el;
+      })
     },
     newRoom() {
       const formData = new FormData();
@@ -408,7 +405,7 @@ export default {
       this.phones.forEach((el, index) => {
         formData.append(`phones[${index}]`, el);
       });
-      this.servicesList.forEach((el, index) => {
+      this.serviesForSend.forEach((el, index) => {
         for(let key in el) {
           formData.append(`servicesList[${index}][${key}]`, el[key]);
         }

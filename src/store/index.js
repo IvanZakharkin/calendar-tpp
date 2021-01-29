@@ -13,16 +13,16 @@ Vue.use(Vuex);
 import calendar from "./modules/calendar.js";
 
 
-export const store = new Vuex.Store({
-    modules: {
-        calendar
-    }
-});
-
-// window.Vuex = Vuex;
-
-// export const store = {
+// export const store = new Vuex.Store({
 //     modules: {
 //         calendar
 //     }
-// };
+// });
+
+window.Vuex = Vuex;
+
+export const store = {
+    modules: {
+        calendar
+    }
+};

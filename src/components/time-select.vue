@@ -104,14 +104,6 @@ export default {
       type: String,
       default: ''
     },
-    timeStartLimit: {
-      type: String,
-      default: ''
-    },
-    timeEndLimit: {
-      type: String,
-      default: ''
-    }
   },
   components: {
     dropdownTime

@@ -61,35 +61,36 @@ const calendar = {
             description: "",
             email: "",
             fileContract: "",
-            id: "123",
+            id: "",
             imagesRooms: [],
             moderators: [],
             name: "",
             numberRoom: "",
             phones: [],
             timeZone: 0,
-            servicesList: [{
-                    iblock_id: "31",
-                    measure: "1504",
-                    name: "Питьевая вода бутилированная б/г 0,33 л",
-                    product_id: "1864623",
-                    product_price: "5000.00",
-                    product_quantity: "100",
-                    ratio: 1,
-                    currency: "150123",
-                    type: "voting"
-                },
-                {
-                    iblock_id: "31",
-                    measure: "1504",
-                    name: "Питьевая вода бутилированная б/г 0,33 л",
-                    product_id: "186462312323",
-                    product_price: "5000.00",
-                    product_quantity: "100",
-                    ratio: 1,
-                    currency: "150123",
-                    type: "voting"
-                },
+            servicesList: [
+                // {
+                //     iblock_id: "31",
+                //     measure: "1504",
+                //     name: "Питьевая вода бутилированная б/г 0,33 л",
+                //     product_id: "1864623",
+                //     product_price: "5000.00",
+                //     product_quantity: "100",
+                //     ratio: 1,
+                //     currency: "150123",
+                //     type: "voting"
+                // },
+                // {
+                //     iblock_id: "31",
+                //     measure: "1504",
+                //     name: "Питьевая вода бутилированная б/г 0,33 л",
+                //     product_id: "186462312323",
+                //     product_price: "5000.00",
+                //     product_quantity: "100",
+                //     ratio: 1,
+                //     currency: "150123",
+                //     type: "voting"
+                // },
             ]
         },
         userInfo: [{
@@ -164,26 +165,29 @@ const calendar = {
                 name: "Персона 1"
             },
         ],
-        services: [{
-                externalId: "videotranslation",
-                id: "1504",
-                value: "Видеотрансляция"
-            },
-            {
-                externalId: "videoconference",
-                id: "1503",
-                value: "Видеоконференция",
-            },
-            {
-                externalId: "audio",
-                id: "1505",
-                value: "Аудиозапись"
-            },
-            {
-                externalId: "voting",
-                id: "1506",
-                value: "Голосование"
-            }
+        services: [
+            // {
+            //     iblock_id: "31",
+            //     measure: "1504",
+            //     name: "Питьевая вода бутилированная б/г 0,33 л",
+            //     id: "1864623",
+            //     price: "5000.00",
+            //     product_quantity: "100",
+            //     ratio: 1,
+            //     currency: "150123",
+            //     type: "voting"
+            // },
+            // {
+            //     iblock_id: "31",
+            //     measure: "1504",
+            //     name: "Питьевая вода бутилированная б/г 0,33 л",
+            //     id: "186462312323",
+            //     price: "5000.00",
+            //     quantity: "100",
+            //     ratio: 1,
+            //     currency: "150123",
+            //     type: "voting"
+            // },
         ],
         roles: [{
                 id: "1617878",
@@ -485,7 +489,7 @@ const calendar = {
                 formData.append(`registration[${index}]`, el);
             });
             state.event.services.forEach((el, index) => {
-                formData.append(`services[${index}]`, el);
+                formData.append(`products[${index}]`, el);
             });
             state.event.attendees.forEach((attendant, i) => {
                 formData.append(`attendees[${i}][id]`, attendant.code);

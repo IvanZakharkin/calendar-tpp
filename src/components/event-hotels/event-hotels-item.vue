@@ -65,7 +65,18 @@ export default {
   data() {
     return {
       responsiblePerson: {},
-      responsiblePersons: [],
+      responsiblePersons: [
+        // {code: 3622, label: "Суходоева Яна Рифовна, ТПП Тюменской области"},
+        // {code: 1805, label: "Суворова Татьяна Федоровна, Брянская ТПП"},
+        // {code: 3134, label: "Кисурина Татьяна Николаевна, Тульская ТПП"},
+        // {code: 6625, label: "Варданян Сурен Оганесович, Союз «Московская ТПП»"},
+        // {code: 2613, label: "Сухарь Роман Васильевич, ТПП Республики Татарстан"},
+        // {code: 2999, label: "Шагеев Радик Мансурович, Торгово-промышленная палата Крыма"},
+        // {code: 2832, label: "Сутырина Ольга Борисовна, ТПП Восточной Сибири"},
+        // {code: 1576, label: "Судзиловская Ольга Александровна"},
+        // {code: 6019, label: "Лексункина Ольга Вячеславна, Союз «Волгоградская торгово-промышленная палата»"},
+        // {code: 4883, label: "Сурина Оксана Ленаровна", roles: [], avatar: "", work_company: ""},
+      ],
       tel: "",
       email: "",
       name: "",
@@ -85,7 +96,9 @@ export default {
   watch: {
     responsiblePerson: function(val) {
       this.$emit("changeHotel", this.newDataHotel);
-      this.$emit("changeParticipantFromHotel", this.responsiblePerson);
+      if(!$.isEmptyObject(val)) {
+        this.$emit("changeParticipantFromHotel", this.responsiblePerson);
+      }
       if (Object.keys(val).length) {
         if (!this.tel) {
           this.tel = val.work_phone;
@@ -127,8 +140,8 @@ export default {
       this.templateHotel = templateHotel;
     },
     onSearch(search, loading) {
-      loading(true);
-      this.search(loading, search, this);
+      // loading(true);
+      // this.search(loading, search, this);
     },
     search: (loading, search, vm) => {
       $.ajax({

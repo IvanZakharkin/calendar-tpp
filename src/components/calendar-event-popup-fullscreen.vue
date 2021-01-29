@@ -20,14 +20,14 @@
         :class="{'calendar-popup-event__choice-type-btn_active': showContentAgendas}"
         @click="changeTab('agendas')"
       ) Повестка
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
-        @click="changeTab('hotels')"
-      ) Гостиницы
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
-        @click="changeTab('reports')"
-      ) Отчетность
+      //- button.btn.calendar-popup-event__choice-type-btn(
+      //-   :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
+      //-   @click="changeTab('hotels')"
+      //- ) Гостиницы
+      //- button.btn.calendar-popup-event__choice-type-btn(
+      //-   :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
+      //-   @click="changeTab('reports')"
+      //- ) Отчетность
     .calendar-event-popup-fullscreen__event-content(v-show="showContentReports")
       .calendar-event-popup-fullscreen__options-row.flex-column
             .calendar-event-popup-fullscreen__options-title.mb-2 Вид
@@ -87,11 +87,13 @@
       .calendar-event-popup-fullscreen__nav
         .calendar-event-popup-fullscreen__nav-item Опции
       .calendar-event-popup-fullscreen__options
-        .calendar-event-popup-fullscreen__options-row
-          .calendar-event-popup-fullscreen__options-checkbox-item(v-for="service in services")
-            label.checkbox
-              input.checkbox__input(type="checkbox" :checked="isServiceChecked(service)" @change="checkService(service)")
-              .checkbox__title {{service.value}}
+        event-options-services(:servicesList="services" :eventServices="selectedServices" @changeServices="changeServices($event)")
+
+        //- .calendar-event-popup-fullscreen__options-row
+        //-   .calendar-event-popup-fullscreen__options-checkbox-item(v-for="service in services")
+        //-     label.checkbox
+        //-       input.checkbox__input(type="checkbox" :checked="isServiceChecked(service)" @change="checkService(service)")
+        //-       .checkbox__title {{service.value}}
         
 
         .calendar-event-popup-fullscreen__options-row.flex-column
@@ -108,7 +110,7 @@
           .calendar-event-popup-fullscreen__options-title Календарь
           .calendar-event-popup-fullscreen__options-item
             calendars-select(
-              @changeCalendar="calendar = $event"
+              @changeCalendar="changeCalendar($event)"
               :selectedCalendar="calendar"
               
             )
@@ -175,6 +177,7 @@ import eventPreview from "./event-preview.vue";
 import eventParticipant from "./event-participant/event-participant.vue";
 import eventHotels from "./event-hotels/event-hotels.vue";
 import timeSelect from "./time-select.vue";
+import eventOptionsServices from "./event-popup/event-options-services.vue"
 import { HOURS, MINUTES } from "./const.js";
 import _ from "lodash";
 
@@ -191,14 +194,7 @@ export default {
       minutesEnd: "",
       status: {},
       date: "",
-      preview: {
-        // name: "",
-        // desc: "",
-        // img: "",
-        // tagsAreaOfInfluence: [],
-        // tagsPersons: [],
-        // tagsSubjects: []
-      },
+      preview: {},
       calendar: {},
       selectedTimezone: {},
       attendees: [],
@@ -274,15 +270,12 @@ export default {
       sectionList: [],
       section: {},
       newEvent: '',
-      // previewEdit: false,
-      // previewView: false,
-      // fileName: "Загрузите изображение",
-      // showImagePreview: false,
-      // imagePreview: "",
       selectedParticipant: [
       ],
       link: '',
-      public: false
+      public: false,
+      calendarServices: [],
+      services: []
       
     };
   },
@@ -386,18 +379,6 @@ export default {
     savePreview(previewData) {
       this.preview = previewData;
     },
-    checkService(service) {
-      if (event.target.checked) {
-        this.selectedServices.push(service.id);
-      } else {
-        this.selectedServices = this.selectedServices.filter(
-          el => el != service.id
-        );
-      }
-    },
-    isServiceChecked(service) {
-      return this.selectedServices.includes(Number(service.id));
-    },
     closePopup() {
       this.resetStateCreatedEvent();
       this.closePopapEventFullScreen();
@@ -466,7 +447,34 @@ export default {
     changeTimeEnd(data) {
       this.hourEnd = data.split(':')[0];
       this.minutesEnd = data.split(':')[1];
-    }
+    },
+    requestCalendarServices() {
+      var vm = this;
+      $.ajax({
+          type: "POST",
+          url: "./index.php",
+          data: {
+              "ajax": "Y",
+              "action": "get-services",
+              "id": this.calendar.id
+          },
+          success: function(response) {
+              if(response.success && response.data) {
+                vm.services = response.data
+              } else {
+                vm.services = [];
+              }
+              
+          }
+      });
+    },
+    changeCalendar(calendar) {
+      this.calendar = calendar;
+      this.requestCalendarServices();
+    },
+    changeServices(services) {
+        this.selectedServices = services;
+    },
   },
 
   computed: {
@@ -474,7 +482,7 @@ export default {
       createdEvent: state => state.calendar.createdEvent,
       calendars: state => state.calendar.calendars,
       timeZones: state => state.calendar.timeZones,
-      services: state => state.calendar.services,
+      // services: state => state.calendar.services,
       event: state => state.calendar.event,
       userInfo: state => state.calendar.userInfo,
       savingEvent: state => state.calendar.loadings.savingEvent
@@ -557,7 +565,8 @@ export default {
     eventAgendas,
     eventParticipant,
     eventHotels,
-    timeSelect
+    timeSelect,
+    eventOptionsServices
   },
   created() {
     this.hours = HOURS;
@@ -578,14 +587,14 @@ export default {
         el => el.code === this.event.timeZone
       )[0];
       this.calendar = this.getCalendar(this.event.calendarId);
-      this.status = this.event.status;
+      this.status = !this.event.status ? this.getStatusByExternalId("application") : this.event.status;
 
 
       this.selectedParticipant = this.event.attendees.map(el => {
         return {...el};
       });
 
-      this.selectedServices = [...this.event.services];
+      this.selectedServices = [...this.event.products];
       this.selectedResponsiblePerson = this.event.responsiblePerson;
       this.agendas = this.event.agendas;
 
@@ -642,15 +651,15 @@ export default {
       };
   },
   mounted() {
-    // console.log(this);
-    // var vm = this;
-    // setTimeout(console.log(this.$refs), 1000);
     $(this.$refs.btnSaveEvent).popover({
       content: 'Укажите название события',
       trigger: 'focus',
       animation: true,
       placement:'top' 
-    })
+    });
+    this.requestCalendarServices();
+    // this.services = this.$store.state.calendar.services;
+
   }
 };
 </script>

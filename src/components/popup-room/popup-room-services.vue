@@ -7,8 +7,7 @@ div
       button.btn.popup-add-room__option-services-add(@click="showServiceForm" type="button" v-show="!serviceFormShown") + Добавить
     transition(name="fade")
         popup-room-services-form(
-          :changingService="service" 
-          :index="servicesList.length + 1" 
+          :changingService="service"  
           v-if="serviceFormShown" 
           @saveService="changeService($event)"
           @cancelService="hideServiceForm")
@@ -23,12 +22,12 @@ div
           col(width="10%")
         tr(
           v-for="(service, index) in servicesList"
-          :key="`service-${service.product_id}`"
-          :class="[isEditServices(service.product_id) ? 'text-warning' : '']"
+          :key="`service-${service.id}`"
+          :class="[isEditServices(service.id) ? 'border border-warning' : '']"
         )
           td {{index + 1}}
           td {{service.name}} 
-          td {{service.product_price}} {{getCurrencyNameById(service.currency)}}
+          td {{service.price}} {{getCurrencyNameById(service.currency)}}
           td {{service.ratio}} {{getMeasureNameById(service.measure)}}
           td {{getTypeNameByExternalId(service.type)}}
           td 
@@ -39,7 +38,7 @@ div
               i.far.fa-edit
             button.px-1.btn.popup-add-room__option-service-btn(
               type="button"
-              @click="deleteService(service.product_id)"
+              @click="deleteService(service.id)"
             )
               i.far.fa-times-circle
               
@@ -47,12 +46,12 @@ div
         //- ul.popup-add-room__option-services-list
         //-   li.popup-add-room__option-service(
         //-     v-for="service in servicesList"
-        //-     :key="`service-${service.product_id}`"
+        //-     :key="`service-${service.id}`"
         //-   )
-        //-     .popup-add-room__option-service-num {{service.product_id}}
+        //-     .popup-add-room__option-service-num {{service.id}}
         //-     .popup-add-room__option-service-title {{service.name}}   
         //-     .popup-add-room__option-service-value {{}}
-        //-     .popup-add-room__option-service-price {{service.product_price}}
+        //-     .popup-add-room__option-service-price {{service.price}}
         //-     button.btn.popup-add-room__option-service-delete(
         //-       type="button"
         //-       @click="deleteService(selectService)"
@@ -70,7 +69,7 @@ export default {
       servicesList: [],
       service: {
         name: '',
-        product_price: '',
+        price: '',
         ratio: '',
         currency: '',
         measure: '',
@@ -89,22 +88,23 @@ export default {
     // ...mapActions(["sendNewRoom", "showRoomOnMap", "deleteRoom"]),
     resetService() {
       this.service.name='';
-      this.service.product_price = '';
+      this.service.price = '';
       this.service.ratio = '';
       this.service.currency = this.currencyList[0].id;
       this.service.measure = this.measuresList[0].id;
-      this.service.type = this.typesList[0].externalId;
-      this.service.product_id = 'f' + getRandomInt();;
+      this.service.type = '';
+      this.service.id = 'f' + getRandomInt();;
       
     },
     showServiceForm() {
       this.serviceFormShown = true;
     },
     hideServiceForm() {
+      this.resetService();
       this.serviceFormShown = false;
     },
     changeService(service) {
-      const index = this.servicesList.findIndex((el) => String(el.product_id) === String(service.product_id));
+      const index = this.servicesList.findIndex((el) => String(el.id) === String(service.id));
       if(index === -1) {
         this.servicesList.push(service);
       } else {
@@ -125,17 +125,18 @@ export default {
     },
     getTypeNameByExternalId(eid) {
       const result = this.typesList.filter(el => el.externalId === eid)[0];
-      if(!result) return '';
+      if(!result) return 'Другое';
       return result.value;
     },
     deleteService(id) {
-      this.servicesList = this.servicesList.filter(el => el.product_id !== id);
+      this.servicesList = this.servicesList.filter(el => el.id !== id);
     },
     editService(service) {
       this.service = service;
       this.showServiceForm();
     },
     isEditServices(id) {
+      console.log(id, this.service);
       return id === this.service.id;
     }
   },
@@ -152,8 +153,10 @@ export default {
     })
   },
   mounted() {
+    
     this.servicesList = this.editRoom.servicesList;
     this.resetService();
+    console.log(this.servicesList);
   }
 };
 </script>

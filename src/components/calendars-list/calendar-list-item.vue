@@ -47,8 +47,8 @@ export default {
       "changeEditingRoom",
     ]),
     editRoom() {
-      this.showPopapAddingCalendar();
-      // this.getRoomForEdit(this.calendar.id);
+      // this.showPopapAddingCalendar();
+      this.getRoomForEdit(this.calendar.id);
     },
     preventClick(event) {
     //   if (this.checkedCalendars.length >= 3 && !this.check) {
