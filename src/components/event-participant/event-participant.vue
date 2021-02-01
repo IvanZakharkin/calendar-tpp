@@ -102,7 +102,7 @@ export default {
   data() {
     return {
       attendees: [],
-      selectedAttendees: [],
+      selectedAttendees: [ ],
       showViewTable: true,
       showViewCards: false,
       filterValue: "",
@@ -142,7 +142,10 @@ export default {
         ...this.selectedTemplates.attendies
       ];
       this.$emit("changeTemplates", this.selectedAttendees);
-    }
+    },
+    attendeesWithHotel: function(val) {
+      console.log(val);
+    } 
   },
   methods: {
     toExcel() {
@@ -313,7 +316,7 @@ export default {
         person.idsHotel = [];
         this.hotels.forEach(hotel => {
           if (hotel.responsiblePerson != void 0 && hotel.responsiblePerson.length != 0) {
-            if (hotel.responsiblePerson[0].code === person.code) {
+            if (String(hotel.responsiblePerson[0].code) === String(person.code)) {
               if(hotel.id) {
                 person.idHotel.push(hotel.id);
               } else {

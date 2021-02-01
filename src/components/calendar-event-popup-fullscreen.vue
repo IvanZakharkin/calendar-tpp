@@ -20,15 +20,15 @@
         :class="{'calendar-popup-event__choice-type-btn_active': showContentAgendas}"
         @click="changeTab('agendas')"
       ) Повестка
-      //- button.btn.calendar-popup-event__choice-type-btn(
-      //-   :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
-      //-   @click="changeTab('hotels')"
-      //- ) Гостиницы
-      //- button.btn.calendar-popup-event__choice-type-btn(
-      //-   :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
-      //-   @click="changeTab('reports')"
-      //- ) Отчетность
-    .calendar-event-popup-fullscreen__event-content(v-show="showContentReports")
+      button.btn.calendar-popup-event__choice-type-btn(
+        :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
+        @click="changeTab('hotels')"
+      ) Гостиницы
+      button.btn.calendar-popup-event__choice-type-btn(
+        :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
+        @click="changeTab('reports')"
+      ) Отчетность
+    .calendar-event-popup-fullscreen__event-content(v-if="showContentReports")
       .calendar-event-popup-fullscreen__options-row.flex-column
             .calendar-event-popup-fullscreen__options-title.mb-2 Вид
             .v-select-custom.v-select-custom-left-105
@@ -124,13 +124,13 @@
             v-model="eventDesc"
           )
     
-    div(v-show="showContentPreview")
+    div(v-if="showContentPreview")
       event-preview(
         @savePreview="savePreview($event)"
         :previewData="preview"
         :date="date"
       )
-    div(v-show="showContentGuest")
+    div(v-if="showContentGuest")
       event-participant(
         @changeParticipant="changeParticipant($event)"
         @changeTemplates="changeTemplates($event)"
@@ -141,7 +141,7 @@
         :registration="registration"
         :hotels="hotels"
       )
-    div(v-show="showContentAgendas")
+    div(v-if="showContentAgendas")
       event-agendas(
         :dateStart="dateStart"
         :dateEnd="dateEnd"
@@ -149,7 +149,7 @@
         @changeAgendas="changeAgendas($event)"
         :agendasList="agendas"
       )
-    div(v-show="showContentHotels")
+    div(v-if="showContentHotels")
       event-hotels(
         :hotels="hotels"
         @changeHotels="changeHotels($event)"
@@ -434,7 +434,8 @@ export default {
     changeParticipantFromHotel(data) {
       if(!data) return;
       const isPersonInParticipant = this.selectedParticipant.some(el => {
-        return el.code === data.code
+        console.log(el.code, data.code);
+        return String(el.code) === String(data.code);
       });
       if(!isPersonInParticipant) {
         this.selectedParticipant.push(data)
@@ -582,6 +583,7 @@ export default {
       this.calendar = this.calendars[0];
       this.status = this.getStatusByExternalId("application");
       this.selectedResponsiblePerson = this.userInfo[0];
+
     } else {
       this.selectedTimezone = this.timeZonesForSelect.filter(
         el => el.code === this.event.timeZone
@@ -593,6 +595,7 @@ export default {
       this.selectedParticipant = this.event.attendees.map(el => {
         return {...el};
       });
+      
 
       this.selectedServices = [...this.event.products];
       this.selectedResponsiblePerson = this.event.responsiblePerson;

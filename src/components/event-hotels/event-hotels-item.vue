@@ -97,7 +97,7 @@ export default {
     responsiblePerson: function(val) {
       this.$emit("changeHotel", this.newDataHotel);
       if(!$.isEmptyObject(val)) {
-        this.$emit("changeParticipantFromHotel", this.responsiblePerson);
+        this.$emit("changeParticipantFromHotel", { ...this.responsiblePerson, ...{roles: []}});
       }
       if (Object.keys(val).length) {
         if (!this.tel) {
@@ -140,8 +140,8 @@ export default {
       this.templateHotel = templateHotel;
     },
     onSearch(search, loading) {
-      // loading(true);
-      // this.search(loading, search, this);
+      loading(true);
+      this.search(loading, search, this);
     },
     search: (loading, search, vm) => {
       $.ajax({
@@ -194,9 +194,9 @@ export default {
     //   ? this.hotel.responsiblePerson[0]
     //   : [];
     this.responsiblePerson = Object.keys(this.hotel.responsiblePerson).length ? this.hotel.responsiblePerson[0] : {};
-    this.email = this.hotel.email;
-    this.tel = this.hotel.tel;
-    this.name = this.hotel.name;
+    this.email = !this.hotel.email ? '' : this.hotel.email;
+    this.tel = !this.hotel.tel ? '' : this.hotel.tel;
+    this.name = !this.hotel.name ? '' : this.hotel.name;
     const suggestView = new ymaps.SuggestView(this.$refs.hotelAddress);
     suggestView.events.add("select", function(e) {
       vm.address = e.get("item").value;

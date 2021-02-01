@@ -500,6 +500,7 @@ const calendar = {
             state.event.hotels.forEach((hotel, i) => {
                 for (let property in hotel) {
                     if (property === "registered") continue;
+                    if (property === "ids") continue;
                     if (property === "responsiblePerson" && hotel[property].length != 0) {
                         formData.append(`hotels[${i}][${property}]`, hotel[property][0].code);
                     } else {
