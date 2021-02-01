@@ -51,7 +51,7 @@
             .text-center(v-if="!shownPopapEventFullScreen")
               .spinner-border(role='status')
                 span.sr-only Loading...    
-            calendar-event-popup-fullscreen(v-if="shownPopapEventFullScreen")
+            event-popup(v-if="shownPopapEventFullScreen")
       .modal.popup-fullscreen#popup-room.fade
         .modal-dialog.popup-fullscreen-dialog
           .modal-content.popup-fullscreen-content
@@ -59,13 +59,6 @@
               .spinner-border(role='status')
                 span.sr-only Loading...
             popup-room(v-if="shownPopapAddingCalendar")
-      .modal.popup-fullscreen#calendar-edit-event-popup.fade
-        .modal-dialog.popup-fullscreen-dialog
-          .modal-content.popup-fullscreen-content
-            .text-center(v-if="!shownPopapEventEdit")
-              .spinner-border(role='status')
-                span.sr-only Loading...
-            calendar-event-edit-popup(v-if="shownPopapEventEdit")
       ymaps
 </template>
 
@@ -74,12 +67,10 @@
 import datePicker from "./components/date-picker/date-picker.vue";
 import FullCalendar from "./components/full-calendar/full-calendar.vue";
 import calendarsList from "./components/calendars-list/calendars-list.vue";
-import calendarEventPopupFullscreen from "./components/calendar-event-popup-fullscreen.vue";
-import calendarEventEditPopup from "./components/calendar-event-edit-popup.vue";
+import eventPopup from "./components/popup-event/event-popup.vue";
 import popupRoom from "./components/popup-room/popup-room.vue";
 import ymaps from "./components/ymaps.vue";
 import vSelect from "./components/v-select/components/Select.vue";
-import moment from "moment-timezone";
 import { roundingMinutes } from './functions.js' 
 import { mapMutations, mapState, mapGetters, mapActions } from "vuex";
 
@@ -89,10 +80,9 @@ export default {
     datePicker,
     FullCalendar,
     calendarsList,
-    calendarEventPopupFullscreen,
+    eventPopup,
     popupRoom,
     ymaps,
-    calendarEventEditPopup,
     vSelect
   },
   data() {

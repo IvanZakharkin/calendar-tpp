@@ -25,14 +25,14 @@
         :dates="datesInWeek"
         :year="year"
       )
-    full-calendar-popup-event(v-if="shownPopapAddingEvent")
+    //- full-calendar-popup-event(v-if="shownPopapAddingEvent")
 </template>
 
 <script>
 // (v-if="shownPopapEventEdit")
 import fullCalendarDay from "./full-calendar-day.vue";
 import fullCalendarWeekDay from "./full-calendar-week-day.vue";
-import fullCalendarPopupEvent from "./full-calendar-popup-event.vue";
+// import fullCalendarPopupEvent from "./full-calendar-popup-event.vue";
 import fullCalendarSchedule from "./full-calendar-schedule.vue";
 // import popupAddingCalendar from "./popup-adding-calendar.vue";
 import popupEventDetails from "../popup-event-details";
@@ -56,7 +56,7 @@ export default {
   components: {
     fullCalendarDay,
     fullCalendarWeekDay,
-    fullCalendarPopupEvent,
+    // fullCalendarPopupEvent,
     fullCalendarSchedule,
     vueCustomScrollbar,
     popupEventDetails

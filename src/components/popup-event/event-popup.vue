@@ -5,30 +5,11 @@
         i.fas.fa-times
     .calendar-popup-event__choice-type
       button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentEvent}"
-        @click="changeTab('event')"
-      ) Событие
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentPreview}"
-        @click="changeTab('preview')"
-      ) Анонс
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentGuest}"
-        @click="changeTab('guest')"
-      ) Участники
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentAgendas}"
-        @click="changeTab('agendas')"
-      ) Повестка
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
-        @click="changeTab('hotels')"
-      ) Гостиницы
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
-        @click="changeTab('reports')"
-      ) Отчетность
-    .calendar-event-popup-fullscreen__event-content(v-if="showContentReports")
+        v-for="tab,key in tabs"
+        :class="{'calendar-popup-event__choice-type-btn_active': tab.show}"
+        @click="changeTab(key)"
+      ) {{tab.name}}
+    .calendar-event-popup-fullscreen__event-content(v-if="tabs.reports.show")
       .calendar-event-popup-fullscreen__options-row.flex-column
             .calendar-event-popup-fullscreen__options-title.mb-2 Вид
             .v-select-custom.v-select-custom-left-105
@@ -46,7 +27,7 @@
             input.form-control.form-control-sm(
               v-model="newEvent"
             )
-    .calendar-event-popup-fullscreen__event-content(v-show="showContentEvent")
+    .calendar-event-popup-fullscreen__event-content(v-show="tabs.event.show")
       .calendar-event-popup-fullscreen__header
         .calendar-event-popup-fullscreen__name
           input.calendar-event-popup-fullscreen__input-name(
@@ -124,13 +105,13 @@
             v-model="eventDesc"
           )
     
-    div(v-if="showContentPreview")
+    div(v-if="tabs.preview.show")
       event-preview(
         @savePreview="savePreview($event)"
         :previewData="preview"
         :date="date"
       )
-    div(v-if="showContentGuest")
+    div(v-if="tabs.participants.show")
       event-participant(
         @changeParticipant="changeParticipant($event)"
         @changeTemplates="changeTemplates($event)"
@@ -141,7 +122,7 @@
         :registration="registration"
         :hotels="hotels"
       )
-    div(v-if="showContentAgendas")
+    div(v-if="tabs.agendas.show")
       event-agendas(
         :dateStart="dateStart"
         :dateEnd="dateEnd"
@@ -149,7 +130,7 @@
         @changeAgendas="changeAgendas($event)"
         :agendasList="agendas"
       )
-    div(v-if="showContentHotels")
+    div(v-if="tabs.hotels.show")
       event-hotels(
         :hotels="hotels"
         @changeHotels="changeHotels($event)"
@@ -167,18 +148,18 @@
 </template>
 
 <script>
-import calendarsSelect from "./calendars-select.vue";
-import vSelect from "./v-select/components/Select.vue";
+import calendarsSelect from "../calendars-select.vue";
+import vSelect from "../v-select/components/Select.vue";
 import { mapMutations, mapState, mapGetters, mapActions } from "vuex";
 import moment from "moment-timezone";
-import dropdownTime from "./dropdown-time.vue";
-import eventAgendas from "./event-agendas/event-agendas.vue";
-import eventPreview from "./event-preview.vue";
-import eventParticipant from "./event-participant/event-participant.vue";
-import eventHotels from "./event-hotels/event-hotels.vue";
-import timeSelect from "./time-select.vue";
-import eventOptionsServices from "./event-popup/event-options-services.vue"
-import { HOURS, MINUTES } from "./const.js";
+import dropdownTime from "../dropdown-time.vue";
+import eventAgendas from "../event-agendas/event-agendas.vue";
+import eventPreview from "../event-preview.vue";
+import eventParticipant from "../event-participant/event-participant.vue";
+import eventHotels from "../event-hotels/event-hotels.vue";
+import timeSelect from "../time-select.vue";
+import eventOptionsServices from "../event-popup/event-options-services.vue"
+import { HOURS, MINUTES } from "../const.js";
 import _ from "lodash";
 
 export default {
@@ -275,8 +256,33 @@ export default {
       link: '',
       public: false,
       calendarServices: [],
-      services: []
-      
+      services: [],
+      tabs: {
+        event: {
+          name: 'Событие',
+          show: true
+        },
+        preview: {
+          name: 'Анонс',
+          show: false
+        },
+        participants: {
+          name: 'Участники',
+          show: false
+        },
+        agendas: {
+          name: 'Повестка',
+          show: false
+        },
+        hotels: {
+          name: 'Гостиницы',
+          show: false
+        },
+        reports: {
+          name: 'Отчетность',
+          show: false
+        }
+      }
     };
   },
   methods: {
@@ -317,62 +323,12 @@ export default {
     changingDate() {
       this.date = this.$refs.inputDate.value;
     },
-    changeTab(tab) {
-      switch (tab) {
-        case "guest": {
-          this.showContentEvent = false;
-          this.showContentPreview = false;
-          this.showContentGuest = true;
-          this.showContentAgendas = false;
-          this.showContentHotels = false;
-          this.showContentReports = false;
-          break;
-        }
-        case "preview": {
-          this.showContentEvent = false;
-          this.showContentPreview = true;
-          this.showContentGuest = false;
-          this.showContentAgendas = false;
-          this.showContentHotels = false;
-          this.showContentReports = false;
-          break;
-        }
-        case "agendas": {
-          this.showContentEvent = false;
-          this.showContentPreview = false;
-          this.showContentGuest = false;
-          this.showContentAgendas = true;
-          this.showContentHotels = false;
-          this.showContentReports = false;
-          break;
-        }
-        case "hotels": {
-          this.showContentEvent = false;
-          this.showContentPreview = false;
-          this.showContentGuest = false;
-          this.showContentAgendas = false;
-          this.showContentHotels = true;
-          this.showContentReports = false;
-          break;
-        }
-        case "reports": {
-          this.showContentEvent = false;
-          this.showContentPreview = false;
-          this.showContentGuest = false;
-          this.showContentAgendas = false;
-          this.showContentHotels = false;
-          this.showContentReports = true;
-          break;
-        }
-        case "event":
-        default: {
-          this.showContentEvent = true;
-          this.showContentPreview = false;
-          this.showContentGuest = false;
-          this.showContentAgendas = false;
-          this.showContentHotels = false;
-          this.showContentReports = false;
-          break;
+    changeTab(selectTab) {
+      for(const tab in this.tabs) {
+        if (tab === selectTab) {
+          this.tabs[tab].show = true;
+        } else {
+          this.tabs[tab].show = false;
         }
       }
     },

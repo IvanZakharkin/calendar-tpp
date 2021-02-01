@@ -6,23 +6,25 @@ import Vuex from "vuex";
 // import 'vue-search-select/dist/VueSearchSelect.css';
 import 'vue-select/dist/vue-select.css';
 
-import moment from "moment-timezone";
 
 
 Vue.use(Vuex);
 import calendar from "./modules/calendar.js";
+import event from "./modules/event.js";
 
 
-// export const store = new Vuex.Store({
-//     modules: {
-//         calendar
-//     }
-// });
-
-window.Vuex = Vuex;
-
-export const store = {
+export const store = new Vuex.Store({
     modules: {
-        calendar
+        calendar,
+        event
     }
-};
+});
+
+// window.Vuex = Vuex;
+
+// export const store = {
+//     modules: {
+//         calendar,
+//         event
+//     }
+// };

@@ -2,7 +2,7 @@ import { EMPTY_EVENT } from "../../components/const.js";
 
 export default {
     state: {
-        event: {
+        data: {
             id: 0,
             dateStart: 0,
             dateEnd: 0,
@@ -20,8 +20,7 @@ export default {
             responsiblePerson: [],
             template: []
         },
-
-
+        popup: false
     },
     actions: {
         getEventForEdit({ commit }, id) {
@@ -169,194 +168,21 @@ export default {
         },
     },
     mutations: {
-        //event
         resetEvent(state) {
             state.event = EMPTY_EVENT;
         },
         updateEvent(state, event) {
             state.event = {...state.event, ...event };
         },
-        updateEditEvent(state, event) {
-            state.editEvent = event;
-        },
-        //end event
-
-        //room
-        updateEditRoom(state, event) {
-            state.editRoom = {...state.editRoom, ...event };
-        },
-        resetEditRoom(state) {
-            state.editRoom = EMPTY_ROOM;
-        },
-        //end room
-
-        //calendars
-        updateCheckedCalendars(state, el) {
-            state.checkedCalendars = [...state.checkedCalendars, el]
-        },
-        updateCalendars(state, calendars) {
-            state.calendars = calendars;
-        },
-        checkCalendar(state, dataCalendar) {
-            return state.calendars.forEach(el => {
-                if (dataCalendar.id === el.id) {
-                    el.checked = dataCalendar.check
-                }
-            })
-        },
-        showPopapAddingCalendar(state) {
-            state.shownPopapAddingCalendar = true;
-            $("#popup-room").modal("show");
-
-        },
-        closePopapAddingCalendar(state) {
-            $("#popup-room").modal("hide");
-            state.shownPopapAddingCalendar = false;
-        },
-        //end calendars
-
-        updateYandexMap(state, dataMap) {
-            state.yandexMap = dataMap;
-        },
-        // updateEditEvent(state, dataEvent) {
-        //   state.editEvent = dataEvent;
-        // },
-        updateEditEvent(state, data) {
-            state.editEvent = data;
-        },
-        changeDetailsEvent(state, eventData) {
-            state.detailsEvent = eventData
-        },
-        changeYandexMap(state, data) {
-            state.yandexMap
-
-        },
-
-        showPopapEventFullScreen(state) {
+        showPopap(state) {
             $('#popup-event-fullscreen').modal('show');
-            state.shownPopapEventFullScreen = true;
+            state.popup = true;
 
         },
         closePopapEventFullScreen(state) {
             $('#popup-event-fullscreen').modal('hide');
             state.event = EMPTY_EVENT;
-            state.shownPopapEventFullScreen = false;
-        },
-        showPopapDetailsEvents(state) {
-            state.shownPopapDetailsEvent = true;
-        },
-        closePopapDetailsEvents(state) {
-            state.shownPopapDetailsEvent = false;
-        },
-        showPopapEventEdit(state) {
-            $('#calendar-edit-event-popup').modal('show');
-            state.shownPopapEventEdit = true;
-            // console.log($('#calendar-edit-event-popup'));
-            // $('#calendar-edit-event-popup').modal('show');
-        },
-        closePopapEventEdit(state) {
-            $('#calendar-edit-event-popup').modal('hide');
-            state.shownPopapEventEdit = false
-
-        },
-        resetStateCreatedEvent(state) {
-            state.createdEvent.create = false;
-            state.createdEvent.dataStart = 0;
-            state.createdEvent.dataEnd = 0;
-            state.createdEvent.dataInterim = 0;
-            state.createdEvent.selectedGuest = [];
-            state.createdEvent.selectedGroups = [];
-            state.createdEvent.name = "";
-        },
-
-        //adding event
-        showPopapAddingEvent(state) {
-            state.shownPopapAddingEvent = true;
-        },
-        closePopupCreatedEvent(state) {
-            // this.resetStateCreatedEvent();
-            state.shownPopapAddingEvent = false;
-        },
-
-        updateCreatedEvent(state, update) {
-            state.createdEvent[update.state] = update.value;
-        },
-        setCurrentDate(state) {
-            const date = new Date();
-            state.year = date.getFullYear();
-            state.month = date.getMonth();
-            state.todayDate = date.getDate();
-            state.day = date.getDate();
-            state.todayYear = date.getFullYear();
-            state.todayMonth = date.getMonth();
-        },
-        toggleMonth(state, direction) {
-            let newMonth = state.month + Number(direction);
-            let newYear = state.year;
-            if (newMonth < 0) {
-                newMonth = 11;
-                newYear -= 1;
-            }
-            if (newMonth > 11) {
-                newMonth = 0;
-                newYear += 1;
-            }
-            if (newYear >= 1970) {
-                state.month = newMonth;
-                state.year = newYear;
-            }
-        },
-        toggleWeek(state, direction) {
-            const numDays = new Date(state.year, state.month + 1, 0).getDate();
-            const lastDayPrevMonth = new Date(state.year, state.month, 0).getDate();
-            const firstDayNextMonth = new Date(
-                state.year,
-                state.month + 1,
-                1
-            ).getDate();
-            let newDay = state.day;
-            if (direction === "prev") {
-                newDay -= 7;
-            }
-            if (direction === "next") {
-                newDay += 7;
-            }
-            let newMonth = state.month;
-            let newYear = state.year;
-            if (newDay < 0) {
-                newMonth -= 1;
-                newDay = lastDayPrevMonth + newDay;
-            }
-            if (newDay > numDays) {
-                newMonth += 1;
-                newDay = firstDayNextMonth + newDay - numDays - 1;
-            }
-            if (newMonth < 0) {
-                newMonth = 11;
-                newYear -= 1;
-            }
-            if (newMonth > 11) {
-                newMonth = 0;
-                newYear += 1;
-            }
-            if (newYear >= 1970) {
-                state.month = newMonth;
-                state.year = newYear;
-                state.day = newDay;
-            }
-        },
-        setDate(state, date) {
-            state.year = date.year;
-            state.month = date.month;
-            state.day = date.day;
-        },
-        createEvent(event) {
-            const eventTopCoordinate = `${event.timeFrom * 50}px`;
-            const eventHeight = "50px";
-            return { eventTop: eventTopCoordinate, eventHeight: eventHeight };
-        },
-        updateEvents(state, events) {
-            state.events = events;
+            state.popup = false;
         }
     }
 };
