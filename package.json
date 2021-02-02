@@ -13,6 +13,7 @@
     "core-js": "^3.6.4",
     "json-server": "^0.16.1",
     "lodash": "^4.17.15",
+    "lodash.uniqueid": "^4.0.1",
     "moment-timezone": "^0.5.31",
     "pug": "^2.0.4",
     "simple-vue-validator": "^0.16.0",

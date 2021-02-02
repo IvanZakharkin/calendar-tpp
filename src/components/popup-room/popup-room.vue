@@ -108,37 +108,8 @@
                         vSelect(
                         multiple v-model="selectedResponsiblePersons" :options="responsiblePersons" @search="onSearch"
                         )
-                    .popup-add-room__option.popup-add-room__option_vertical
-                      .popup-add-room__option-title.mb-2 Телефоны
-                      .d-flex.w-100
-                        input.popup-add-room__option-input.w-100(type="tel" v-model="phone" v-show="phones.length < 3")
-                        button.btn.popup-add-room__btn-phone(
-                          type="button"
-                          v-show="phone.length"
-                          @click="phone = ''"
-                          )
-                          i.fas.fa-times
-                        button.btn.popup-add-room__btn-phone(
-                          type="button"
-                          v-show="phone.length"
-                          @click="phones.push(phone);phone = ''"
-                          )
-                          i.fas.fa-plus-circle
-                      .popup-add-room__phone.w-100(
-                        v-for="(phone, index) in phones"
-                      ) 
-                        .popup-add-room__phone-text {{phone}}
-                        button.btn.popup-add-room__btn-phone(
-                          type="button"
-                          @click="phones.splice(index, 1)"
-                        )
-                          i.fas.fa-times
-                    .popup-add-room__option.popup-add-room__option_vertical
-                      .popup-add-room__option-title.mb-2 E-mail
-                      input.popup-add-room__option-input.w-100(
-                          type="email"
-                          v-model="email"
-                        )
+                    popup-room-contacts-inputs(:contactsType="{name: 'Телефоны', type: 'tel'}" :contactsValues="editRoom.phones" @changeContacts="changeContacts($event, 'phones')")
+                    popup-room-contacts-inputs(:contactsType="{name: 'Emails', type: 'email'}" :contactsValues="editRoom.email" @changeContacts="changeContacts($event, 'email')")
               
             popup-room-services(@changeServicesList="changeServicesList($event)")
             .text-right.mt-5
@@ -154,7 +125,9 @@
 
 <script>
 import vSelect from "../v-select/components/Select.vue";
+import uniqueid from 'lodash.uniqueid';
 import popupRoomServices from "./popup-room-services.vue"
+import popupRoomContactsInputs from "./popup-room-contacts-inputs"
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 
 export default {
@@ -174,23 +147,25 @@ export default {
       color: "",
       responsiblePersons: [],
       selectedResponsiblePersons: [],
-      email: "",
-      phone: "",
       servicesList: [],
       selectedServices: [],
       id: null,
       address: "",
       selectedTimezone: {},
       phones: [],
+      email: [],
       coordinates: [],
       locationValidate: false,
-      validateError: ""
+      validateError: "",
     };
   },
 
   methods: {
     ...mapMutations(["closePopapAddingCalendar", "resetEditRoom"]),
     ...mapActions(["sendNewRoom", "showRoomOnMap", "deleteRoom"]),
+    changeContacts(data, type) {
+      this[type] = data;
+    },
     showMap() {
       this.geocode(true);
     },
@@ -350,7 +325,8 @@ export default {
   },
   components: {
     vSelect,
-    popupRoomServices
+    popupRoomServices,
+    popupRoomContactsInputs
   },
   computed: {
     ...mapState({

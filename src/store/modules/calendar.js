@@ -59,7 +59,7 @@ const calendar = {
             color: "",
             coordinates: "",
             description: "",
-            email: "",
+            email: [],
             fileContract: "",
             id: "",
             imagesRooms: [],
