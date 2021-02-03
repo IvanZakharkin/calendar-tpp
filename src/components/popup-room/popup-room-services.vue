@@ -41,22 +41,6 @@ div
               @click="deleteService(service.id)"
             )
               i.far.fa-times-circle
-              
-      
-        //- ul.popup-add-room__option-services-list
-        //-   li.popup-add-room__option-service(
-        //-     v-for="service in servicesList"
-        //-     :key="`service-${service.id}`"
-        //-   )
-        //-     .popup-add-room__option-service-num {{service.id}}
-        //-     .popup-add-room__option-service-title {{service.name}}   
-        //-     .popup-add-room__option-service-value {{}}
-        //-     .popup-add-room__option-service-price {{service.price}}
-        //-     button.btn.popup-add-room__option-service-delete(
-        //-       type="button"
-        //-       @click="deleteService(selectService)"
-        //-     )
-        //-       i.fas.fa-times
 </template>
 <script>
 import popupRoomServicesForm from "./popup-room-services-form";

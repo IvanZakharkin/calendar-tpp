@@ -67,38 +67,7 @@
                         placeholder="описание"
                         v-model="desc"
                         )
-                    .popup-add-room__option.popup-add-room__option_vertical
-                      .popup-add-room__option-title Добавить изображение (не более 20)
-                      .popup-add-room__room-images
-                        .popup-add-room__pics
-                          .popup-add-room__pic(
-                            v-for="(roomImage,index) in uploadedImagesRoom"
-                            :key="`room-image-${index}`"
-                            
-                            )
-                            img.popup-add-room__img(:src="roomImage.src")
-                            button.popup-add-room__btn-delete-img(
-                              type="button"
-                              @click="deleteUploadedImage(index)"
-                            )
-                              i.fas.fa-times
-
-                          .popup-add-room__pic(v-for="roomImage in imagesRooms")
-                            img.popup-add-room__img(:src="roomImage")
-                            button.popup-add-room__btn-delete-img(
-                              type="button"
-                              @click="deleteImage(index)"
-                            )
-                              i.fas.fa-times
-                        label.popup-add-room__file-img(
-                          v-if="imagesRooms.length <= 20"
-                        )
-                          input.popup-add-room__option-file-hidden(
-                            type="file"
-                            @change="handleFileImagesUpload()"
-                            ref="filesImage"
-                          )
-                          .popup-add-room__file-img-icon +
+                    popup-room-images(@changeImagesRooms="changeImagesRooms($event)" @changeImagesRoomsFromServer="changeImagesRoomsFromServer($event)")
                 .col-4
                   .popup-add-room__info-title Контактные данные
                   .popup-add-room__options
@@ -126,8 +95,9 @@
 <script>
 import vSelect from "../v-select/components/Select.vue";
 import uniqueid from 'lodash.uniqueid';
-import popupRoomServices from "./popup-room-services.vue"
-import popupRoomContactsInputs from "./popup-room-contacts-inputs"
+import popupRoomServices from "./popup-room-services.vue";
+import popupRoomContactsInputs from "./popup-room-contacts-inputs";
+import popupRoomImages from "./popup-room-images";
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 
 export default {
@@ -141,8 +111,7 @@ export default {
       fileContractName: "+ Прикрепить файл",
       fileContractServer: false,
       imagesRooms: [],
-      imagesRoomsFiles: [],
-      uploadedImagesRoom: [],
+      imagesRoomsFromServer: [],
       desc: "",
       color: "",
       responsiblePersons: [],
@@ -163,6 +132,14 @@ export default {
   methods: {
     ...mapMutations(["closePopapAddingCalendar", "resetEditRoom"]),
     ...mapActions(["sendNewRoom", "showRoomOnMap", "deleteRoom"]),
+    changeImagesRooms(event) {
+      console.log(event);
+      this.imagesRooms = event;
+    },
+    changeImagesRoomsFromServer(event) {
+      console.log(event);
+      this.imagesRoomsFromServer = event;
+    },
     changeContacts(data, type) {
       this[type] = data;
     },
@@ -172,12 +149,6 @@ export default {
     deleteFileContract() {
       this.fileContract = "";
       this.fileContractName = "+ Прикрепить файл";
-    },
-    deleteImage(index) {
-      this.imagesRooms.splice(index, 1);
-    },
-    deleteUploadedImage(index) {
-      this.uploadedImagesRoom.splice(index, 1);
     },
     saveRoom(event) {
       console.log(event);
@@ -212,25 +183,6 @@ export default {
       this.fileContract = this.$refs.fileContractRef.files[0];
       this.fileContractName = this.fileContract.name;
       this.fileContractServer = false;
-    },
-    handleFileImagesUpload() {
-      const vm = this;
-      const fileImage = this.$refs.filesImage.files[0];
-      let reader = new FileReader();
-      reader.addEventListener(
-        "load",
-        function() {
-          this.imagesRoomsFiles.push(fileImage);
-          vm.imagesRooms.push(reader.result);
-        }.bind(this),
-        false
-      );
-      reader.onload = function() {};
-      if (fileImage) {
-        if (/\.(jpe?g|png|gif)$/i.test(fileImage.name)) {
-          reader.readAsDataURL(this.$refs.filesImage.files[0]);
-        }
-      }
     },
     onSearch(search, loading) {
       loading(true);
@@ -326,7 +278,8 @@ export default {
   components: {
     vSelect,
     popupRoomServices,
-    popupRoomContactsInputs
+    popupRoomContactsInputs,
+    popupRoomImages
   },
   computed: {
     ...mapState({
@@ -389,10 +342,10 @@ export default {
       this.selectedResponsiblePersons.forEach((el, index) => {
         formData.append(`moderators[${index}]`, el.code);
       });
-      this.imagesRoomsFiles.forEach((el, index) => {
+      this.imagesRooms.forEach((el, index) => {
         formData.append(`imagesRooms[${index}]`, el);
       });
-      this.imagesForSend.forEach((el, index) => {
+      this.imagesRoomsFromServer.forEach((el, index) => {
         formData.append(`imagesRoomsExisting[${index}]`, el);
       });
       if (this.id) {
