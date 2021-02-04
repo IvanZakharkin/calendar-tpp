@@ -117,7 +117,7 @@ export default {
 			return this.imagesRooms.map((el) => el.file);
 		},
 		getImagesRoomFromServerForSend() {
-			return this.imagesRooms.map((el) => el.code);
+			return this.imagesRoomFromServer.map((el) => el.code);
 		}
 	},
 	components: {},

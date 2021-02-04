@@ -14,16 +14,20 @@
 		.calendar-popup-event-detail__desk
 			p {{event.desk}}
 		.text-right.p-2
+			a.btn.calendar-popup-event-detail__btn(:href="event.link")
+				i.fas.fa-globe
 			button.btn.calendar-popup-event-detail__btn(type='button', data-dismiss='modal' @click="deleteCurrentEvent()")
 				i.far.fa-trash-alt
 			button.btn.calendar-popup-event-detail__btn(type='button' @click="editEvent()")
 				i.fas.fa-pencil-alt
-			a.btn.calendar-popup-event-detail__btn(:href="link")
+			a.btn.calendar-popup-event-detail__btn(:href="event.detail_url")
 				i.fas.fa-link
 </template>
 
 <script>
-import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex';
+import { modalConfirm } from '../functions.js'
+
 export default {
 	methods: {
 		...mapMutations(["closePopapDetailsEvents", "updateEditEvent", "showPopapEventEdit", "showPopapEventFullScreen"]),
@@ -33,9 +37,20 @@ export default {
 			this.closePopapDetailsEvents();
 		},
 		deleteCurrentEvent() {
-			this.deleteEvent(this.event.id);
-			this.closePopapDetailsEvents();
-		}
+			const del = () => {
+				this.deleteEvent(this.event.id);
+				this.closePopapDetailsEvents();
+			};
+
+			modalConfirm({
+				onConfirm: del,
+				title: 'Удаление события',
+				content: 'Вы уверены, что хотите удалить данное событий?',
+			});
+			// this.deleteEvent(this.event.id);
+			// this.closePopapDetailsEvents();
+		},
+		
 	},
 	computed: {
 		...mapGetters(["getEvent"]),
@@ -48,10 +63,10 @@ export default {
 		style() {
 			return `top: ${this.detailsEvent.topCoordinate}px; left: ${this.detailsEvent.leftCoordinate}px;`;
 		},
-		link() {
-			// return `${location.origin}${this.event.detail_url}`;
-			return this.event.detail_url;
-		}
+		// link() {
+		// 	// return `${location.origin}${this.event.detail_url}`;
+		// 	return this.event.detail_url;
+		// }
 	},
 	mounted() {
 		const vm = this;

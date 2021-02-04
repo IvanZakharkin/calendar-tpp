@@ -11,16 +11,17 @@
                 i.fas.fa-times
             .participant-card__left
                 .participant-card__name {{participant.label}}
-                .participant-card__desc(v-if="participant.work_position") {{participant.work_position}}
+                .participant-card__desc(v-if="participant.position") {{participant.position}}
                 .participant-card__contact(v-if="participant.work_company")
-                    a.participant-card__contact-link(href="") {{participant.work_company}}
-                    a.participant-card__contact-title(href="") ТПП
+                    .participant-card__contact-title {{participant.company}}
+                .participant-card__contact(v-if="participant.work_position")
+                    .participant-card__contact-title {{participant.position}}
                 .participant-card__contact(v-if="participant.work_phone")
-                    a.participant-card__contact-link(href="") {{participant.work_phone}}
-                    a.participant-card__contact-title(href="") Телефон
-                .participant-card__contact(v-if="participant.email")
-                    a.participant-card__contact-link(href="") {{participant.email}}
-                    a.participant-card__contact-title(href="") Email
+                    .participant-card__contact-title(class="mr-2") Телефон
+                    a.participant-card__contact-link(:href="'tel:' + participant.phone") {{participant.work_phone}}
+                .participant-card__contact(v-if="'mailto:' + participant.email")
+                    .participant-card__contact-title(class="mr-2") Email
+                    a.participant-card__contact-link(:href="participant.email") {{participant.email}}
                 .participant-card__roles
                     ul.tags
                         li.tags__item(
@@ -60,6 +61,7 @@ import { mapMutations, mapState, mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+
     };
   },
   props: {

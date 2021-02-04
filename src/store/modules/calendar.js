@@ -16,13 +16,13 @@ const calendar = {
         todayMonth: 0,
         day: 0,
         events: [
-            ...fEvents
+            // ...fEvents
         ],
         calendars: [
-            ...fCalendars
+            // ...fCalendars
         ],
         timeZones: [
-            ...fTimezones
+            // ...fTimezones
         ],
         createdEvent: {
             create: false,
@@ -258,7 +258,8 @@ const calendar = {
         canEditCalendars: 1,
         canEditEvents: 1,
         loadings: {
-            savingEvent: false
+            savingEvent: false,
+            savingCalendar: false
         },
         measureList: [{
                 id: "1504",
@@ -360,7 +361,8 @@ const calendar = {
                 }
             });
         },
-        sendNewRoom({ dispatch, commit }, event) {
+        sendNewRoom({ state, dispatch, commit }, event) {
+            state.loadings.savingCalendar = true;
             $.ajax({
                 type: "POST",
                 url: "./index.php",
@@ -381,12 +383,14 @@ const calendar = {
                         });
                         // alert(`${response.error}`);
                     }
+                    state.loadings.savingCalendar = false;
                 },
                 error: function() {
                     modalPopup({
                         title: 'Ошибка при сохранении календаря',
                         content: 'Повторите попытку позже'
                     });
+                    state.loadings.savingCalendar = false;
                     // alert("ошибка при получении ответа");
                 }
             });
@@ -438,7 +442,8 @@ const calendar = {
                 },
                 success: function(response) {
                     dispatch("getEventsInWeek");
-                }
+                },
+
             });
         },
         getCalendars({ commit }) {

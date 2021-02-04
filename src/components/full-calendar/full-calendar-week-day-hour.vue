@@ -140,6 +140,30 @@ export default {
       type: Object,
       default: () => {}
     }
+  },
+  mounted() {
+	const vm = this;
+	document.addEventListener("mouseup", function(event) {
+	if (vm.createdEvent.create === true) {
+
+		vm.updateCreatedEvent({
+			state: "dataEnd",
+			value: vm.createdEvent.dataInterim
+		});
+		vm.updateCreatedEvent({
+			state: "create",
+			value: false
+		});
+		vm.updateEvent({
+			dateStart: vm.getDataStartCreatedEvent,
+			dateEnd: vm.getDataEndCreatedEvent
+		});
+		vm.showPopapEventFullScreen();
+	}
+			// if(vm.shownPopapAddingEvent) {
+			// 	vm.closePopupCreatedEvent();
+			// }
+    });
   }
 };
 </script>

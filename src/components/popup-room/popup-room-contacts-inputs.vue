@@ -76,7 +76,7 @@ export default {
     components: {},
     computed: {},
     mounted() {
-        if (this.contactsValues.length) {
+        if (Array.isArray(this.contactsValues) && this.contactsValues.length) {
             this.values = this.contactsValues.reduce((acc, el) => {
                 acc[uniqueid(`${this.contactsType.type}_`)] = el;
 

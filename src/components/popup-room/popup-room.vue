@@ -78,7 +78,7 @@
                         multiple v-model="selectedResponsiblePersons" :options="responsiblePersons" @search="onSearch"
                         )
                     popup-room-contacts-inputs(:contactsType="{name: 'Телефоны', type: 'tel'}" :contactsValues="editRoom.phones" @changeContacts="changeContacts($event, 'phones')")
-                    popup-room-contacts-inputs(:contactsType="{name: 'Emails', type: 'email'}" :contactsValues="editRoom.email" @changeContacts="changeContacts($event, 'email')")
+                    popup-room-contacts-inputs(:contactsType="{name: 'Emails', type: 'email'}" :contactsValues="editRoom.email" @changeContacts="changeContacts($event, 'emails')")
               
             popup-room-services(@changeServicesList="changeServicesList($event)")
             .text-right.mt-5
@@ -89,7 +89,10 @@
               ) Удалить
               button.btn.btn-primary.popup-add-room__btn-save(
                 type="submit"
-              ) Сохранить
+                :disabled="sendingRoom"
+              ) 
+                span.spinner-border.spinner-border-sm.mr-2(role="status" aria-hidden="true" v-show="sendingRoom")
+                | Сохранить
 </template>
 
 <script>
@@ -122,7 +125,7 @@ export default {
       address: "",
       selectedTimezone: {},
       phones: [],
-      email: [],
+      emails: [],
       coordinates: [],
       locationValidate: false,
       validateError: "",
@@ -151,7 +154,6 @@ export default {
       this.fileContractName = "+ Прикрепить файл";
     },
     saveRoom(event) {
-      console.log(event);
       event.preventDefault();
       // if (!this.coordinates || this.address != this.editRoom.address) {
         // this.geocode(false);
@@ -166,7 +168,18 @@ export default {
         action: 'delete-calendar',
         id: this.id
       }
-      this.deleteRoom(data);
+      
+			const del = () => {
+				this.deleteRoom(data);
+			};
+
+			modalConfirm({
+				onConfirm: del,
+				title: 'Удаление календаря',
+				content: 'Вы уверены, что хотите удалить данный календарь?',
+			});
+			// this.deleteEvent(this.event.id);
+			// this.closePopapDetailsEvents();
     },
     addService(service) {
       this.selectedServices.forEach(el => {
@@ -288,7 +301,8 @@ export default {
       shownPopapAddingCalendar: state => state.calendar.shownPopapAddingCalendar,
       editingRoom: state => state.calendar.editingRoom,
       measuresList: state => state.calendar.measureList,
-      currencyList: state => state.calendar.currencyList
+      currencyList: state => state.calendar.currencyList,
+      sendingRoom: state => state.calendar.loadings.savingCalendar
     }),
     ...mapGetters([
       "getCurrentTimeZone",
@@ -333,6 +347,9 @@ export default {
       formData.append("timeZone", this.selectedTimezone.code);
       this.phones.forEach((el, index) => {
         formData.append(`phones[${index}]`, el);
+      });
+      this.emails.forEach((el, index) => {
+        formData.append(`emails[${index}]`, el);
       });
       this.serviesForSend.forEach((el, index) => {
         for(let key in el) {

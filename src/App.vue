@@ -191,19 +191,6 @@ export default {
       vm.closePopapAddingCalendar(); 
       vm.resetEditRoom();
     })
-
-    document.addEventListener("click", function(event) {
-      if (vm.createdEvent.create === true) {
-        vm.updateCreatedEvent({
-          state: "create",
-          value: false
-        });
-        vm.showPopapEventFullScreen();
-			}
-			// if(vm.shownPopapAddingEvent) {
-			// 	vm.closePopupCreatedEvent();
-			// }
-    });
   }
 };
 </script>

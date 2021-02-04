@@ -49,7 +49,7 @@ function modalConfirm(options) {
         '<button type="button" class="btn btn-primary mr-3 action-ok">Ok</button>' +
         '<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>' +
         '</div>';
-    $modal = modalPopup(options);
+    var $modal = modalPopup(options);
     $modal.find('button.action-ok').click(function() {
         if (typeof options.onConfirm === 'function')
             $modal.on('hidden.bs.modal', options.onConfirm);

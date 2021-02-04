@@ -75,7 +75,8 @@ const EMPTY_ROOM = {
     numberRoom: "",
     phones: [],
     timeZone: 0,
-    hotels: []
+    hotels: [],
+    servicesList: []
 };
 
 const HOURS_FOR_CALENDAR = [

@@ -20,14 +20,14 @@
         :class="{'calendar-popup-event__choice-type-btn_active': showContentAgendas}"
         @click="changeTab('agendas')"
       ) Повестка
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
-        @click="changeTab('hotels')"
-      ) Гостиницы
-      button.btn.calendar-popup-event__choice-type-btn(
-        :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
-        @click="changeTab('reports')"
-      ) Отчетность
+      //- button.btn.calendar-popup-event__choice-type-btn(
+      //-   :class="{'calendar-popup-event__choice-type-btn_active': showContentHotels}"
+      //-   @click="changeTab('hotels')"
+      //- ) Гостиницы
+      //- button.btn.calendar-popup-event__choice-type-btn(
+      //-   :class="{'calendar-popup-event__choice-type-btn_active': showContentReports}"
+      //-   @click="changeTab('reports')"
+      //- ) Отчетность
     .calendar-event-popup-fullscreen__event-content(v-if="showContentReports")
       .calendar-event-popup-fullscreen__options-row.flex-column
             .calendar-event-popup-fullscreen__options-title.mb-2 Вид
