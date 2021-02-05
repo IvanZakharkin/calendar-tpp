@@ -21,25 +21,21 @@
               v-if="shownPopapDetailsEvent"
             )
     .bcalendar__view-schedule(v-if="displayType === 'schedule'")
-      full-calendar-schedule(
-        :dates="datesInWeek"
-        :year="year"
-      )
-    full-calendar-popup-event(v-if="shownPopapAddingEvent")
+      full-calendar-schedule()
+    .bcalendar__view-schedule(v-if="displayType === 'applications'")
+      full-calendar-applications()
 </template>
 
 <script>
-// (v-if="shownPopapEventEdit")
+
 import fullCalendarDay from "./full-calendar-day.vue";
-import fullCalendarWeekDay from "./full-calendar-week-day.vue";
-import fullCalendarPopupEvent from "./full-calendar-popup-event.vue";
-import fullCalendarSchedule from "./full-calendar-schedule.vue";
-// import popupAddingCalendar from "./popup-adding-calendar.vue";
-import popupEventDetails from "../popup-event-details";
+import fullCalendarSchedule from "./full-calendar-schedule";
+import fullCalendarApplications from "./full-calendar-applications";
+import fullCalendarWeekDay from "./full-calendar-week-day"
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import { mapState } from "vuex";
 
-const DAYS_WEEK = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+// const DAYS_WEEK = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
 
 export default {
   data() {
@@ -55,11 +51,10 @@ export default {
   },
   components: {
     fullCalendarDay,
-    fullCalendarWeekDay,
-    fullCalendarPopupEvent,
     fullCalendarSchedule,
     vueCustomScrollbar,
-    popupEventDetails
+    fullCalendarApplications,
+    fullCalendarWeekDay
   },
   computed: {
     ...mapState({

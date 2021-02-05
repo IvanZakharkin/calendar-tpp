@@ -36,7 +36,7 @@
               i.fas.fa-cog
             v-select(
               v-model="displayType"
-              :options="[{label: 'Неделя', code: 'week'}, {label: 'Расписание', code: 'schedule'}, {label: 'Рабочие дни', code: 'workingDays'}]")
+              :options="displayTypeList")
       .calendar-page__row
         .calendar-page__col-left
           date-picker
@@ -111,7 +111,13 @@ export default {
         "Ноябрь",
         "Декабрь"
       ],
-      displayType: {label: 'Рабочие дни', code: 'workingDays'}
+      displayType: {label: 'Рабочие дни', code: 'workingDays'},
+      displayTypeList: [
+        {label: 'Рабочие дни', code: 'workingDays'},
+        {label: 'Неделя', code: 'week'}, 
+        {label: 'Расписание', code: 'schedule'}, 
+        {label: 'Заявки', code: 'applications'},
+      ]
     };
   },
   computed: {

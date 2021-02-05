@@ -118,11 +118,16 @@
           .calendar-event-popup-fullscreen__options-title Ссылка на страницу мероприятий
           .calendar-event-popup-fullscreen__options-item
             input.form-control.form-control-sm(type="text" v-model="link")
-        .calendar-event-popup-fullscreen__options-row
-          textarea.form-control.calendar-event-popup-fullscreen__textarea(
-            placeholder="Описание"
-            v-model="eventDesc"
-          )
+        editor(
+          api-key="4fc22f658a9e80d7031f6484b2a535b522bd7b1e1bdceffbdcda8ccc2623ff9c"
+          :init="{height: 500,menubar: false}"
+          v-model="eventDesc"
+        )
+        //- .calendar-event-popup-fullscreen__options-row
+        //-   textarea.form-control.calendar-event-popup-fullscreen__textarea(
+        //-     placeholder="Описание"
+        //-     v-model="eventDesc"
+        //-   )
     
     div(v-if="showContentPreview")
       event-preview(
@@ -180,7 +185,7 @@ import timeSelect from "./time-select.vue";
 import eventOptionsServices from "./event-popup/event-options-services.vue"
 import { HOURS, MINUTES } from "./const.js";
 import _ from "lodash";
-
+import Editor from '@tinymce/tinymce-vue'
 export default {
   data() {
     return {
@@ -567,7 +572,8 @@ export default {
     eventParticipant,
     eventHotels,
     timeSelect,
-    eventOptionsServices
+    eventOptionsServices,
+    Editor
   },
   created() {
     this.hours = HOURS;

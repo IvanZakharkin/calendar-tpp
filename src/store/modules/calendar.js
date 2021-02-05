@@ -16,13 +16,13 @@ const calendar = {
         todayMonth: 0,
         day: 0,
         events: [
-            // ...fEvents
+            ...fEvents
         ],
         calendars: [
-            // ...fCalendars
+            ...fCalendars
         ],
         timeZones: [
-            // ...fTimezones
+            ...fTimezones
         ],
         createdEvent: {
             create: false,
