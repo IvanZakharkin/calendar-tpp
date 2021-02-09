@@ -50,14 +50,15 @@
         .calendar-event-participant__container
             .calendar-event-participant__view-table(v-if="showViewTable")
                 .calendar-event-participant__table
-                    event-participant-table-filter(
-                      :participants="selectedAttendees"
-                      :hotels="hotels"
-                      @search="searchСurrent($event)"
-                      @changeRoleAllParticipants="changeRoleAllParticipants($event)"
-                      @filterPatricipantByCheckedRole="filterPatricipantByCheckedRole($event)"
-                      @filterPatricipantByUncheckedRole="filterPatricipantByUncheckedRole($event)"
-                    )
+                  event-participant-table-filter(
+                    :participants="selectedAttendees"
+                    :hotels="hotels"
+                    @search="searchСurrent($event)"
+                    @changeRoleAllParticipants="changeRoleAllParticipants($event)"
+                    @filterPatricipantByCheckedRole="filterPatricipantByCheckedRole($event)"
+                    @filterPatricipantByUncheckedRole="filterPatricipantByUncheckedRole($event)"
+                  )
+                  .calendar-event-participant__table-container
                     event-participant-table-person(
                         v-for="(attendant,index) in filteredAttendeesByRoles"
                         :key="`${attendant.code}-${index}`"
@@ -68,17 +69,17 @@
                         @changePersonHotel="changePersonHotel($event)"
                     )
             .calendar-event-participant__view-cards(v-if="showViewCards")
-                ul.calendar-event-participant__cards-list
-                    li.calendar-event-participant__cards-list-item(
-                        v-for="attendant in selectedAttendees"
-                    )
-                        event-participant-card(
-                            :key="`${attendant.code}-${index}`"
-                            :participant="attendant"
-                            @addRole="addRole($event, attendant)"
-                            @deleteRole="deleteRole($event, attendant)"
-                            @deleteParticipant="deleteParticipant($event)"
-                        )
+              ul.calendar-event-participant__cards-list
+                  li.calendar-event-participant__cards-list-item(
+                      v-for="attendant in selectedAttendees"
+                  )
+                      event-participant-card(
+                          :key="`${attendant.code}-${index}`"
+                          :participant="attendant"
+                          @addRole="addRole($event, attendant)"
+                          @deleteRole="deleteRole($event, attendant)"
+                          @deleteParticipant="deleteParticipant($event)"
+                      )
 </template>
 
 <script>

@@ -228,6 +228,8 @@ export default {
 @import "./components/styles/calendar-event-agendas.scss";
 @import "./components/styles/calendar-event-agenda.scss";
 @import "./components/styles/dropdown-time.scss";
+@import "./components/styles/events-canban.scss";
+@import "./components/styles/canban-event.scss";
 
 .calendar-page {
   // height: 100vh;

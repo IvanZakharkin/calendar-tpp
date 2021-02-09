@@ -16,13 +16,13 @@ const calendar = {
         todayMonth: 0,
         day: 0,
         events: [
-            // ...fEvents
+            ...fEvents
         ],
         calendars: [
-            // ...fCalendars
+            ...fCalendars
         ],
         timeZones: [
-            // ...fTimezones
+            ...fTimezones
         ],
         createdEvent: {
             create: false,
@@ -108,31 +108,37 @@ const calendar = {
             show: false
         },
 
-        statusList: [{
-                externalId: "plan",
-                id: "1509",
-                value: "Запланировано"
+        statusList: [
+            {
+                externalId: "application",
+                id: "1508",
+                value: "Заявка",
+                color: '#FFAB00'
             },
             {
-                externalId: "done",
-                id: "1511",
-                value: "Состоялось"
+                externalId: "plan",
+                id: "1509",
+                value: "Запланировано",
+                color: '#00C4FB'
             },
             {
                 externalId: "denied",
                 id: "1510",
-                value: "Отказано"
+                value: "Отказано",
+                color: '#FF5752'
             },
             {
                 externalId: "canceled",
                 id: "1512",
-                value: "Отменено"
+                value: "Отменено",
+                color: '#FF5752'
             },
             {
-                externalId: "application",
-                id: "1508",
-                value: "Заявка"
-            }
+                externalId: "done",
+                id: "1511",
+                value: "Состоялось",
+                color: '#75D900'
+            },
         ],
         tagsAreaOfInfluence: [{
                 id: 1771942,
@@ -296,7 +302,7 @@ const calendar = {
             }
         },
         statusIcons: {
-            application: '<i class="fas fa-unlock"></i>',
+            application: '<i class="fas fa-lock-open"></i>',
             plan: '<i class="fas fa-lock"></i>',
             done: '<i class="fas fa-check"></i>',
             canceled: '<i class="fas fa-ban"></i>',

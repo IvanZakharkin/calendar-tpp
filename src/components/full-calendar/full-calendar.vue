@@ -23,7 +23,9 @@
     .bcalendar__view-schedule(v-if="displayType === 'schedule'")
       full-calendar-schedule()
     .bcalendar__view-schedule(v-if="displayType === 'applications'")
-      full-calendar-applications()
+      full-calendar-events-canban
+
+      //- full-calendar-applications()
 </template>
 
 <script>
@@ -31,8 +33,11 @@
 import fullCalendarDay from "./full-calendar-day.vue";
 import fullCalendarSchedule from "./full-calendar-schedule";
 import fullCalendarApplications from "./full-calendar-applications";
+import fullCalendarEventsCanban from ".//full-calendar-events-canban";
 import fullCalendarWeekDay from "./full-calendar-week-day"
 import vueCustomScrollbar from 'vue-custom-scrollbar'
+import popupEventDetails from '../popup-event-details'
+
 import { mapState } from "vuex";
 
 // const DAYS_WEEK = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
@@ -54,7 +59,9 @@ export default {
     fullCalendarSchedule,
     vueCustomScrollbar,
     fullCalendarApplications,
-    fullCalendarWeekDay
+    fullCalendarWeekDay,
+    popupEventDetails,
+    fullCalendarEventsCanban
   },
   computed: {
     ...mapState({

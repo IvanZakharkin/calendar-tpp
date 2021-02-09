@@ -105,14 +105,13 @@
           .dropdown.calendars-select
             button.btn.calendars-select__selected-item(type='button' data-toggle='dropdown')
               | {{ status.value }}
-              span.ml-2(v-html="statusIcons[status.externalId]")
+              span.calendars-select__icon(v-html="statusIcons[status.externalId]")
               .calendars-select__icon
                 i.fas.fa-chevron-down
             .dropdown-menu
               button.dropdown-item.calendars-select__dropdown-item.d-flex.justify-content-between(v-for="statusItem in statusList" @click="changeStatus(statusItem)") 
-                
                 | {{ statusItem.value }}
-                span.ml-2(v-html="statusIcons[statusItem.externalId]")
+                span.calendars-select__icon(v-html="statusIcons[statusItem.externalId]")
 
 
         .calendar-event-popup-fullscreen__options-row.align-items-center
@@ -442,7 +441,6 @@ export default {
     changeParticipantFromHotel(data) {
       if(!data) return;
       const isPersonInParticipant = this.selectedParticipant.some(el => {
-        console.log(el.code, data.code);
         return String(el.code) === String(data.code);
       });
       if(!isPersonInParticipant) {
