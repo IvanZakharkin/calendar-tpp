@@ -1,6 +1,6 @@
 .dropdown-time  {
   .dropdown-item {
-    padding: 5px;
+    padding: .375rem .75rem;
 
   }
   .dropdown-menu {
@@ -11,4 +11,16 @@
     max-height: 150px;
     overflow: auto;
   }
+
+  &>.btn {
+    background: #f0efef;
+    border: none;
+    font-size: 14px;
+    color: #656875;
+
+    &:disabled {
+      background: none;
+    }
+  }
+
 }

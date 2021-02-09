@@ -1,29 +1,32 @@
 <template lang="pug">
-div.d-flex.calendar-event-popup-fullscreen__field
-  .d-flex
+div.d-flex
+  .d-flex.calendar-event-popup-fullscreen__field(:class="{'disabled': disabled}")
     dropdown-time(
       :times="hours"
       :currentTime="hourStart"
       @changeTime="hourStart = $event"
+      :disabled="disabled"
     )
     .d-flex.align-items-center :
     dropdown-time(
       :times="minutes"
       :currentTime="minutesStart"
       @changeTime="minutesStart = $event"
+      :disabled="disabled"
     )
     .d-flex.align-items-center -
-  .d-flex
     dropdown-time(
       :times="hoursForTimeEnd"
       :currentTime="hourEnd"
       @changeTime="hourEnd = $event"
+      :disabled="disabled"
     )
     .d-flex.align-items-center :
     dropdown-time(
       :times="minutesForTimeEnd"
       :currentTime="minutesEnd"
       @changeTime="minutesEnd = $event"
+      :disabled="disabled"
     )
 </template>
 
@@ -38,8 +41,8 @@ export default {
       hourEnd: "",
       minutesStart: "",
       minutesEnd: "",
-      hours: [],
-      minutes: []
+      // hours: [],
+      // minutes: []
     }
   },
   watch: {
@@ -81,13 +84,13 @@ export default {
   },
   computed: {
     hoursForTimeEnd() {
-      const hours = [...HOURS];
+      const hours = [...this.hours];
       const indexHourStart = hours.indexOf(this.hourStart);
       hours.splice(0, indexHourStart);
       return hours;
     },
     minutesForTimeEnd() {
-      const minutes = [...MINUTES];
+      const minutes = [...this.minutes];
       if (parseInt(this.hourStart) === parseInt(this.hourEnd)) {
         const indexMinutesStart = minutes.indexOf(this.minutesStart);
         minutes.splice(0, indexMinutesStart + 1);
@@ -104,13 +107,30 @@ export default {
       type: String,
       default: ''
     },
+    hours: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    minutes: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     dropdownTime
   },
   mounted() {
-    this.hours = HOURS;
-    this.minutes = MINUTES;
+    console.log(this.timeStart, this.timeEnd);
+    // this.hours = HOURS;
+    // this.minutes = MINUTES;
     this.hourStart = this.timeStart.split(':')[0];
     this.minutesStart = this.timeStart.split(':')[1];
     this.hourEnd = this.timeEnd.split(':')[0];

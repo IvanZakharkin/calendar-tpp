@@ -50,10 +50,10 @@ export default {
   watch: {},
   methods: {
     endCreateEvent() {
-      this.$emit("changeAgendaData", {
+      this.$emit("endCreateAgenda", {
         creating: false
       });
-      this.$emit("showPopupCreatedAgenda")
+      // this.$emit("showPopupCreatedAgenda")
     },
     changeCreatedAgenda(event) {
       if(!this.agendaData.creating) return; 

@@ -15,29 +15,13 @@
             v-model="name")
         .calendar-popup-event__parameters
           .calendar-popup-event__parameter
-            dropdown-time(
-              :times="hours"
-              :currentTime="hourStart"
-              @changeTime="hourStart = $event"
-            )
-            .py-1 :
-            dropdown-time(
-              :times="minutes"
-              :currentTime="minutesStart"
-              @changeTime="minutesStart = $event"
-            )
-            .p-1 -
-            .calendar-event-popup-fullscreen__field.d-flex
-            dropdown-time(
-              :times="hours"
-              :currentTime="hourEnd"
-              @changeTime="hourEnd = $event"
-            )
-            .py-1 :
-            dropdown-time(
-              :times="minutes"
-              :currentTime="minutesEnd"
-              @changeTime="minutesEnd = $event"
+            time-select(
+              :timeStart="`${hourStart}:${minutesStart}`"
+              :timeEnd="`${hourEnd}:${minutesEnd}`"
+              :hours="hours"
+              :minutes="minutes"
+              @changeTimeStart="changeTimeStart($event)"
+              @changeTimeEnd="changeTimeEnd($event)"
             )
           .calendar-popup-event__parameter.flex-column
             .mb-2 Участники
@@ -45,6 +29,9 @@
               vSelect(
                 multiple v-model="selectedParticipants" :options="participants" @search="onSearch"
               )
+          .calendar-popup-event__parameter.flex-column.flex-column
+            <div class="mb-2">Описание</div>
+            textarea.form-control(id="agenda-description" v-model="description")
         .d-flex.justify-content-between
           button.btn.btn-danger(
             @click="deleteAgenda()"
@@ -59,6 +46,7 @@
 import { mapMutations, mapState, mapGetters } from "vuex";
 import vSelect from "../v-select/components/Select.vue";
 import dropdownTime from "../dropdown-time.vue";
+import timeSelect from "../time-select";
 import { HOURS, MINUTES } from "../const.js";
 import moment from "moment-timezone";
 
@@ -103,10 +91,12 @@ export default {
     currentDate: {
       type: String, 
       default: ""
-    }
+    },
   },
   computed: {
-    ...mapState({}),
+    ...mapState({
+      tinymce: state => state.calendar.tinymce,
+    }),
     ...mapGetters(["getDataStartCreatedEvent", "getDataEndCreatedEvent"]),
     timeStartAgendaToMoment() {
       // return this.agendaData.timeStart;
@@ -121,25 +111,8 @@ export default {
   },
   components: {
     vSelect,
-    dropdownTime
-  },
-  created() {},
-  mounted() {
-    this.hours = HOURS.filter(el => {
-        return (
-          Number(el) >= Number(this.dateStartEventMoment.format("HH")) &&
-          Number(el) <= Number(this.dateEndEventMoment.format("HH"))
-        );
-      });;
-    this.minutes = MINUTES;
-
-    this.hourStart = this.timeStartAgendaToMoment.format("HH");
-    this.minutesStart = this.timeStartAgendaToMoment.format("mm");
-    this.hourEnd = this.timeEndAgendaToMoment.format("HH");
-    this.minutesEnd = this.timeEndAgendaToMoment.format("mm");
-
-    this.name = this.agendaData.name;
-    this.selectedParticipants = this.agendaData.speakers;
+    dropdownTime,
+    timeSelect,
   },
   methods: {
     ...mapMutations([]),
@@ -159,7 +132,8 @@ export default {
         timeStart: moment(`${this.currentDate} ${this.hourStart}:${this.minutesStart}`).unix(),
         timeEnd: moment(`${this.currentDate} ${this.hourEnd}:${this.minutesEnd}`).unix(),
         name: this.name,
-        speakers: this.selectedParticipants
+        speakers: this.selectedParticipants,
+        description: this.description
       };
       if(this.agendaData.id) {
         changeAgenda.id = this.agendaData.id
@@ -187,7 +161,56 @@ export default {
           loading(false);
         }
       });
+    },
+    changeTimeStart(data) {
+      this.hourStart = data.split(':')[0];
+      this.minutesStart = data.split(':')[1];
+    },
+    changeTimeEnd(data) {
+      this.hourEnd = data.split(':')[0];
+      this.minutesEnd = data.split(':')[1];
+    },
+    getListMinutes() {
+      return [].concat(...Array.from(Array(60), (_, minute) => ([
+        moment({minute}).format('mm'),
+      ])))
     }
+  },
+  created() {
+    this.hours = HOURS.filter(el => {
+        return (
+          Number(el) >= Number(this.dateStartEventMoment.format("HH")) &&
+          Number(el) <= Number(this.dateEndEventMoment.format("HH"))
+        );
+      });
+    this.minutes = this.getListMinutes();
+
+    this.hourStart = this.timeStartAgendaToMoment.format("HH");
+    this.minutesStart = this.timeStartAgendaToMoment.format("mm");
+    this.hourEnd = this.timeEndAgendaToMoment.format("HH");
+    this.minutesEnd = this.timeEndAgendaToMoment.format("mm");
+
+    this.name = this.agendaData.name;
+    this.selectedParticipants = this.agendaData.speakers;
+    this.description = this.agendaData.description;
+  },
+  mounted() {
+    tinymce.init({
+      ...this.tinymce.options, 
+      ...{
+        selector: '#agenda-description',
+        language: 'ru',
+        height: 200,
+        init_instance_callback: (editor) => {
+          editor.on('input', (e) => {
+            this.description = editor.getContent();
+          });
+        }
+      }
+    })
+  },
+  destroyed() {
+    tinymce.remove();
   }
 };
 </script>

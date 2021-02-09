@@ -8,8 +8,9 @@
     background: #fff;
     width: 100%;
     font-size: 14px;
-    color: black;
+    color: #656875;
     min-height: 655px;
+    font-size: 14px;
     display: flex;
     flex-direction: column;
     &__header {
@@ -95,6 +96,19 @@
         // height: 35px;
         &_timezone {
             width: 150px;
+        }
+
+        &:disabled, &.disabled {
+            background: #ffffff;
+            border-bottom: 1px solid rgba(60,60,60,.26);
+            border-radius: 0;
+            i {
+                display: none;
+            }
+        }
+
+        &.btn:disabled, &.btn.disabled {
+            border-radius: 0;
         }
     }
     &__conf {

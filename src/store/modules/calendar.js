@@ -16,13 +16,13 @@ const calendar = {
         todayMonth: 0,
         day: 0,
         events: [
-            ...fEvents
+            // ...fEvents
         ],
         calendars: [
-            ...fCalendars
+            // ...fCalendars
         ],
         timeZones: [
-            ...fTimezones
+            // ...fTimezones
         ],
         createdEvent: {
             create: false,
@@ -278,7 +278,30 @@ const calendar = {
                 id: "150124",
                 name: "рубли"
             },
-        ]
+        ],
+        tinymce: {
+            key: "4fc22f658a9e80d7031f6484b2a535b522bd7b1e1bdceffbdcda8ccc2623ff9c",
+            options: {
+                height: 500,
+                menubar: 'view',
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            }
+        },
+        statusIcons: {
+            application: '<i class="fas fa-unlock"></i>',
+            plan: '<i class="fas fa-lock"></i>',
+            done: '<i class="fas fa-check"></i>',
+            canceled: '<i class="fas fa-ban"></i>',
+            denied: '<i class="far fa-times-circle"></i>'
+        }
     },
     actions: {
         getEventsInWeek({ getters, commit }) {
@@ -846,5 +869,6 @@ const calendar = {
             state.events = events;
         }
     }
+    
 };
 export default calendar;

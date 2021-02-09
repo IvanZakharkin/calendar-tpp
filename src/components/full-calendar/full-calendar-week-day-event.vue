@@ -4,11 +4,15 @@
     :style="styleEvent"
     @click="detailsEvent()"
   )
-    .bcalendar__event-title {{event.name}}
+
+    .bcalendar__event-status-icon(v-html="statusIcons[event.status.externalId]")
+      
+    .bcalendar__event-title
+      span {{event.name}}
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 import moment from "moment-timezone";
 export default {
   date() {
@@ -57,6 +61,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      statusIcons: state => state.calendar.statusIcons
+    }),
     ...mapGetters(["getCalendar", "getTimeZoneById", "getStatusByExternalId"]),
     // status() {
     //   return this.getStatusByExternalId(this.event.status);
@@ -149,7 +156,8 @@ export default {
       if(this.event.status.id) {
         switch (this.event.status.externalId) {
           case "application":
-            background = `background: linear-gradient(${this.calendar.color} 50%, #D3D3D3 50%); background-size: 100% 20px;`;
+            background = `background:rgb(211, 211, 211); border: 1px solid ${this.calendar.color}`;
+            // background = `background: linear-gradient(${this.calendar.color} 50%, #D3D3D3 50%); background-size: 100% 20px;`;
             break;
           case "plan": 
             background = `background: ${this.calendar.color}`;
@@ -180,4 +188,5 @@ export default {
   background: orange;
   width: 95%;
 }
+
 </style>

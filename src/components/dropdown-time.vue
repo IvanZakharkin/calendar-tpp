@@ -1,6 +1,6 @@
 <template lang="pug">
   .dropdown.dropdown-time
-    button.btn.calendar-event-popup-fullscreen__field(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+    button.btn(:disabled="disabled" type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
       | {{currentTime}}
     .dropdown-menu(aria-labelledby='dropdownMenuButton')
       button.dropdown-item(
@@ -25,6 +25,10 @@ export default {
     currentTime: {
       type: String,
       default: () => ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },  
   methods: {

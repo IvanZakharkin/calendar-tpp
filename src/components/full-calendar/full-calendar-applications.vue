@@ -23,7 +23,7 @@ export default {
     }),
     filteredEvents() {
       return this.events.filter((event) => event.status.externalId === "application")
-                        .sort((a, b) => a.dateStart - b.dateStart);
+        .sort((a, b) => a.dateStart - b.dateStart);
     }
   },
   components: {

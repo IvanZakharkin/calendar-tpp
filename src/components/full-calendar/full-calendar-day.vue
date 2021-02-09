@@ -2,7 +2,7 @@
 	
 		.bcalendar__day(:class="{'bcalendar__day_active': isToday === true}")
 			.bcalendar__day-num
-				button.bcalendar__day-num-btn {{date.day}}
+				.bcalendar__day-num-btn {{date.day}}
 			.bcalendar__day-name {{date.daysWeek}}
 </template>
 

@@ -412,7 +412,21 @@ export default {
       this.color = "#000000";
     }
     ymaps.ready(this.init());
-  }
+
+    // tinymce.init({
+    //   selector: '#event-description',
+    //   language: 'ru',
+    //   init_instance_callback: (editor) => {
+    //     editor.on('input', (e) => {
+    //       this.eventDesc = editor.getContent();
+    //     });
+    //   }
+    // });
+  },
+
+  // destroyed() {
+  //   tinymce.remove();
+  // }
 };
 </script>
 

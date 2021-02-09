@@ -61,21 +61,24 @@
             :value='date',  
             onclick='BX.calendar({node: this, field: this, bTime: false});'
             @change="changingDate()"
+            :disabled="eventStatusIsNotApplication()"
           )
         .calendar-event-popup-fullscreen__row-item
           time-select(
             :timeStart="`${hourStart}:${minutesStart}`"
             :timeEnd="`${hourEnd}:${minutesEnd}`"
+            :hours="hours"
+            :minutes="minutes"
             @changeTimeStart="changeTimeStart($event)"
             @changeTimeEnd="changeTimeEnd($event)"
+            :disabled="eventStatusIsNotApplication()"
           )
         .calendar-event-popup-fullscreen__row-item
-          .calendar-event-popup-fullscreen__field.calendar-event-popup-fullscreen__field_timezone
             .dropdown
-              button.btn.w-100.text-left.d-flex.justify-content-between.align-items-center.calendar-event-popup-fullscreen__field(disabled type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+              button.btn.d-flex.justify-content-between.align-items-center.calendar-event-popup-fullscreen__field.calendar-event-popup-fullscreen__field_timezone(disabled type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
                 | {{selectedTimezone.label}}
                 i.fas.fa-chevron-down
-              .dropdown-menu(aria-labelledby='dropdownMenuButton')
+              .dropdown-menu
                 button.dropdown-item(
                   v-for="timeZone in timeZonesForSelect"
                   @click="selectedTimezone = timeZone"
@@ -87,14 +90,8 @@
       .calendar-event-popup-fullscreen__nav
         .calendar-event-popup-fullscreen__nav-item Опции
       .calendar-event-popup-fullscreen__options
-        event-options-services(:servicesList="services" :eventServices="selectedServices" @changeServices="changeServices($event)")
 
-        //- .calendar-event-popup-fullscreen__options-row
-        //-   .calendar-event-popup-fullscreen__options-checkbox-item(v-for="service in services")
-        //-     label.checkbox
-        //-       input.checkbox__input(type="checkbox" :checked="isServiceChecked(service)" @change="checkService(service)")
-        //-       .checkbox__title {{service.value}}
-        
+        event-options-services(:servicesList="services" :eventServices="selectedServices" @changeServices="changeServices($event)")
 
         .calendar-event-popup-fullscreen__options-row.flex-column
             .calendar-event-popup-fullscreen__options-title.mb-2 Ответственный
@@ -102,9 +99,21 @@
               vSelect(
                 v-model="selectedResponsiblePerson" :options="responsiblePerson"
               )
-        .calendar-event-popup-fullscreen__options-row
+  
+        .calendar-event-popup-fullscreen__options-row.align-items-center
           .calendar-event-popup-fullscreen__options-title.mr-2 Статус:
-          .text-black {{status.value}}
+          .dropdown.calendars-select
+            button.btn.calendars-select__selected-item(type='button' data-toggle='dropdown')
+              | {{ status.value }}
+              span.ml-2(v-html="statusIcons[status.externalId]")
+              .calendars-select__icon
+                i.fas.fa-chevron-down
+            .dropdown-menu
+              button.dropdown-item.calendars-select__dropdown-item.d-flex.justify-content-between(v-for="statusItem in statusList" @click="changeStatus(statusItem)") 
+                
+                | {{ statusItem.value }}
+                span.ml-2(v-html="statusIcons[statusItem.externalId]")
+
 
         .calendar-event-popup-fullscreen__options-row.align-items-center
           .calendar-event-popup-fullscreen__options-title Календарь
@@ -114,20 +123,14 @@
               :selectedCalendar="calendar"
               
             )
+            
         .calendar-event-popup-fullscreen__options-row.align-items-center
           .calendar-event-popup-fullscreen__options-title Ссылка на страницу мероприятий
           .calendar-event-popup-fullscreen__options-item
             input.form-control.form-control-sm(type="text" v-model="link")
-        editor(
-          api-key="4fc22f658a9e80d7031f6484b2a535b522bd7b1e1bdceffbdcda8ccc2623ff9c"
-          :init="{height: 500,menubar: false}"
-          v-model="eventDesc"
-        )
-        //- .calendar-event-popup-fullscreen__options-row
-        //-   textarea.form-control.calendar-event-popup-fullscreen__textarea(
-        //-     placeholder="Описание"
-        //-     v-model="eventDesc"
-        //-   )
+        
+        .calendar-event-popup-fullscreen__options-row.flex-column
+          textarea.form-control.w-100(id="event-description")
     
     div(v-if="showContentPreview")
       event-preview(
@@ -481,6 +484,12 @@ export default {
     changeServices(services) {
         this.selectedServices = services;
     },
+    changeStatus(status) {
+      this.status = status;
+    },
+    eventStatusIsNotApplication() {
+      return this.status.externalId !== 'application';
+    }
   },
 
   computed: {
@@ -491,7 +500,10 @@ export default {
       // services: state => state.calendar.services,
       event: state => state.calendar.event,
       userInfo: state => state.calendar.userInfo,
-      savingEvent: state => state.calendar.loadings.savingEvent
+      savingEvent: state => state.calendar.loadings.savingEvent,
+      tinymce: state => state.calendar.tinymce,
+      statusList: state => state.calendar.statusList,
+      statusIcons: state => state.calendar.statusIcons,
     }),
     ...mapGetters([
       "tagsPersonsForSelect",
@@ -501,7 +513,7 @@ export default {
       "timeZone",
       "getTimeZoneById",
       "getCurrentTimeZone",
-      "getStatusByExternalId"
+      "getStatusByExternalId",
     ]),
     templatesForSelect() {
       return this.templates.map(el => {
@@ -667,8 +679,23 @@ export default {
       placement:'top' 
     });
     this.requestCalendarServices();
-    // this.services = this.$store.state.calendar.services;
-
+    
+    tinymce.init({
+      ...this.tinymce.options, 
+      ...{
+        selector: '#event-description',
+        language: 'ru',
+        height: 300,
+        init_instance_callback: (editor) => {
+          editor.on('input', (e) => {
+            this.eventDesc = editor.getContent();
+          });
+        }
+      }
+    });
+  },
+  destroyed() {
+    tinymce.remove();
   }
 };
 </script>

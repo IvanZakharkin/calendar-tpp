@@ -1,5 +1,5 @@
 <template lang="pug">
-.calendar-event-agendas
+.calendar-event-agendas.mb-4
     //- vueCustomScrollbar(class="scroll-area")
     .calendar-event-agendas__container
         .calendar-event-agendas__hours
@@ -69,6 +69,15 @@
 <script>
 //
 const HEIGHT_HOUR = 110;
+const ALL_MINUTES = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+];
+
 import { mapMutations, mapState, mapGetters, mapActions } from "vuex";
 import { HOURS_FOR_CALENDAR } from "../const.js";
 import eventAgendasList from "./event-agendas-list.vue";
@@ -84,11 +93,13 @@ export default {
   data() {
     return {
       hours: [],
+      minutes: [],
       createdAgendaData: {
         timeStart: "",
         timeEnd: "",
         creating: false,
         name: "",
+        description: "",
         participants: []
       },
       agenda:[],
@@ -134,6 +145,7 @@ export default {
         timeEnd: "",
         creating: false,
         name: "",
+        description: "",
         participants: []
       };
     },
@@ -161,16 +173,13 @@ export default {
         timeEnd: this.timeEndCreatedAgendas,
         name: this.createdAgendaData.name,
         speakers: this.createdAgendaData.participants,
-        ids: this.createdAgendaData.ids
+        description: this.createdAgendaData.description,
+        ids: this.createdAgendaData.ids,
+
       });
       this.showPopup = false;
     },
     saveChangeAgenda(agenda) {
-      // const searchAgenda = this.agendas.filter(el => {
-      //   console.log(agenda.id != el.id);
-      //   if(agenda.ids) agenda.ids != el.ids;
-      //   if(agenda.id) agenda.id != el.id;
-      // });
       const searchAgenda = this.agendas.map(el => {
         if(agenda.ids && agenda.ids === el.ids) {
           return agenda;
@@ -181,14 +190,12 @@ export default {
         }
         return el;
       });
-      // searchAgenda.push(agenda);
-      // console.log(searchAgenda);
       this.agendas = searchAgenda;
       this.closePopupChange();
     },
     closePopupChange() {
       this.showPopupChange = false;
-    }
+    },
   },
   computed: {
     ...mapState({}),
@@ -246,127 +253,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-// .calendar-event-agendas {
-//   &__container {
-//     display: flex;
-//     border-bottom: 1px solid #e6e5e5;
-//     border-top: 1px solid #e6e5e5;
-//     max-height: 550px;
-//     overflow: auto;
-//     position: relative;
-//   }
-//   &__hours {
-//     width: 5%;
-//   }
-//   &__hour {
-//     text-align: center;
-//     height: 110px;
-//     position: relative;
-//   }
-//   &__hour-text {
-//     font-size: 11px;
-//     color: #969696;
-//     position: absolute;
-//     width: 100%;
-//     text-align: center;
-//     bottom: -6px;
-//   }
-//   &__field-day {
-//     flex: 1;
-//     position: relative;
-//   }
-//   &__field-day-hour {
-//     height: 110px;
-//     border: 1px solid #e6e5e5;
-//     border-top: none;
-
-//     position: relative;
-
-//     &_active {
-//       background: #ededed;
-//     }
-//   }
-//   &__item {
-//     position: absolute;
-//     top: 300px;
-//     left: 0;
-//     width: 100%;
-//     height: 300px;
-//   }
-// }
-
-// .calendar-event-agenda {
-//   position: absolute;
-//   background: rgba(#d1e1f7, 0.6);
-//   border-radius: 10px;
-//   // height: 100%;
-//   margin: 0 15px 0 5px;
-//   border: 2px solid #fff;
-//   width: 99%;
-//   cursor: pointer;
-
-//   &_transfer {
-//     width: 90%;
-//     margin: 0 5%;
-//     box-shadow: 0 0.5rem 1rem rgba(63, 87, 193, 0.2);
-//     z-index: 1000;
-//   }
-
-//   &_create {
-//     width: 99%;
-//     height: auto;
-//     background: #d1e1f7;
-//   }
-
-//   &__info {
-//     position: absolute;
-//     top: 10px;
-//     left: 5px;
-//   }
-//   &__title {
-//     color: #093254;
-//     font-size: 14px;
-//   }
-//   &__time {
-//     color: #656875;
-//     font-size: 14px;
-//   }
-
-//   &__persons {
-//     position: absolute;
-//     top: 15px;
-//     right: 15px;
-//   }
-//   &__person {
-//     display: inline-block;
-//     margin-right: 10px;
-//   }
-//   &__person-popup {
-//     display: none;
-//     position: absolute;
-//     bottom: calc(100% + 5px);
-//     right: 0;
-//     width: 340px;
-
-//     &_active {
-//       display: block;
-//     }
-//   }
-
-//   &__person-avatar {
-//     width: 40px;
-//     height: 40px;
-//     border-radius: 50%;
-//     overflow: hidden;
-//     // border: none;
-//     // background: none;
-//     padding: 0;
-//     cursor: pointer;
-//   }
-//   &__person-avatar-img {
-//     object-fit: cover;
-//   }
-// }
-</style>
