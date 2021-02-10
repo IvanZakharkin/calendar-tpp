@@ -686,6 +686,10 @@ const calendar = {
     },
     mutations: {
         //event
+        updateStatusEvent(state, {event, status}) {
+            const e = state.events.find((el) => el.id === event.id);
+            e.status = status;
+        },
         resetEvent(state) {
             state.event = EMPTY_EVENT;
         },

@@ -1,7 +1,5 @@
 <template lang="pug">
-.bcalendar__week-grid-day(
-  @click="test()"
-)
+.bcalendar__week-grid-day
 	full-calendar-week-day-hour(
 		v-for="hour in hours"
 		:hour="hour"
@@ -138,11 +136,6 @@ export default {
   },
   methods: {
     ...mapMutations(["updateCreatedEvent"]),
-    test(){
-      this.events.filter(event => {
-        return event.id === 1;
-      })
-    },
     getDetailsEvent(event) {
       this.eventDetails = event;
       this.shownPopupEventDetails = true;

@@ -7,6 +7,7 @@
                     :status="statusItem"
                     :events="events"
                     :key="statusItem.externalId"
+                    :draggableEvent="draggableEvent"
                     @dragEvent="dragEvent($event)"
                     @dropEvent="dropEvent($event)"
                     :draggability="draggability">
@@ -19,12 +20,17 @@
 <script>
 
 import eventsCanbanStatusColumn from './events-canban-status-column'
-
+import { mapState } from 'vuex'
 export default {
     data: function() {
         return {
             draggableEvent: {}
         }
+    },
+    computed: {
+        ...mapState({
+            draggability: state => state.eventsCanban.draggability,
+        }),
     },
     props: {
         events: {
@@ -45,19 +51,18 @@ export default {
                 return {}
             }
         },
-        draggability: {
-            type: Boolean,
-            default: true
-        }
+        // draggability: {
+        //     type: Boolean,
+        //     default: true
+        // }
     },
     methods: {
         dragEvent(event) {
-            console.log(event);
             this.draggableEvent = event;
         },
         dropEvent(status) {
             console.log(status, this.draggableEvent);
-        }
+        },
     },
     components: {
         'events-canban-status-column': eventsCanbanStatusColumn

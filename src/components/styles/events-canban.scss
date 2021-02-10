@@ -1,9 +1,17 @@
 .events-canban {
+    height: 100%;
+
+    &__container {
+        height: inherit;
+    }
     &__columns {
         display: flex;
+        position: relative;
+        height: inherit;
     }
 
     &__column {
+        height: inherit;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -22,28 +30,41 @@
         background: #ace9fb;
         position: relative;
         margin-bottom: 10px;
+        overflow: hidden;
 
-        // &:after {
-        //     content: '';
-        //     display: block;
-        //     background: inherit;
-        //     height: 100%;
-        //     width: 20px;
-        //     right: 0;
-        //     top: 0;
-        //     position: absolute;
-        //     border: 20px solid transparent; border-left: 20px solid green;
-        // }
+        &:after, &:before {
+            content: '';
+            display: block;
+            background: inherit;
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            background: #ffffff;
+            transform: rotate(45deg);
+        }
+
+        &:before {
+            right: -10px;
+            top: -10px;
+        }
+
+        &:after {
+            right: -10px;
+            bottom: -10px;
+        }
+
 
     }
     &__column-title {
         color: #ffffff;
         text-shadow: 1px 0 2px black, 0 1px 2px black;
         padding-left: 5px;
+        font-size: 16px;
     }
     &__column-body {
         flex: 1;
         padding: 0 10px 10px 2px;
+        position: relative;
     }
 
     &__calendar-sign {
@@ -53,6 +74,45 @@
         margin-right: 5px;
         border-radius: 50%;
     }
+
+    &__column-body-dropzone {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+    }
+
+    .canban-event__loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0, .4);
+    }
+
+    .status-application {
+        background: rgb(255, 171, 0);
+    }
+    .status-plan {
+        background: rgb(0, 196, 251);
+    }
+    .status-denied {
+        background: rgb(255, 87, 82);
+    }
+    .status-canceled {
+        background: #BFC5CD;
+    }
+    .status-done {
+        background: rgb(117, 217, 0);
+    }
+
+    
 }
 
 .canban-event__calendar-sign {

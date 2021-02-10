@@ -11,18 +11,21 @@ import moment from "moment-timezone";
 
 Vue.use(Vuex);
 import calendar from "./modules/calendar.js";
+import eventsCanban from "./modules/events-canban";
 
 
-export const store = new Vuex.Store({
-    modules: {
-        calendar
-    }
-});
-
-// window.Vuex = Vuex;
-
-// export const store = {
+// export const store = new Vuex.Store({
 //     modules: {
-//         calendar
+//         calendar,
+//         eventsCanban
 //     }
-// };
+// });
+
+window.Vuex = Vuex;
+
+export const store = {
+    modules: {
+        calendar,
+            eventsCanban
+    }
+};

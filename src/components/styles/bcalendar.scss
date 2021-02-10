@@ -3,6 +3,8 @@
     padding-top: 10px;
     padding-bottom: 10px;
     box-shadow: 0 0 16px rgba(63, 87, 193, 0.2);
+    height: 100%;
+    overflow: auto;
     &__days {
         display: flex;
         padding: 10px 20px 10px 7.6%;
@@ -237,6 +239,9 @@
         }
     }
 
+    &__view-schedule {
+        height: inherit;
+    }
 
 }
 
