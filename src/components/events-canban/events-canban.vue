@@ -9,8 +9,7 @@
                     :key="statusItem.externalId"
                     :draggableEvent="draggableEvent"
                     @dragEvent="dragEvent($event)"
-                    @dropEvent="dropEvent($event)"
-                    :draggability="draggability">
+                    @dropEvent="dropEvent($event)">
                 </events-canban-status-column>
             </div>
         </div>
@@ -51,10 +50,6 @@ export default {
                 return {}
             }
         },
-        // draggability: {
-        //     type: Boolean,
-        //     default: true
-        // }
     },
     methods: {
         dragEvent(event) {

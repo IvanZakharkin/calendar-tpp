@@ -129,7 +129,7 @@
             input.form-control.form-control-sm(type="text" v-model="link")
         
         .calendar-event-popup-fullscreen__options-row.flex-column
-          textarea.form-control.w-100(id="event-description")
+          textarea.form-control.w-100(id="event-description" v-model="desc")
     
     div(v-if="showContentPreview")
       event-preview(

@@ -197,6 +197,21 @@ export default {
       vm.closePopapAddingCalendar(); 
       vm.resetEditRoom();
     })
+
+    const request = () => {
+      $.ajax({
+        type: "GET",
+        url: "./",
+        success: function(response) {
+          console.log(response.includes('id="app"'));
+          if(!response.includes('id="app"')) {
+            console.log('перезагрузить');
+          }
+        }
+      });
+    }
+    request();
+    setInterval(request, 60000)
   }
 };
 </script>

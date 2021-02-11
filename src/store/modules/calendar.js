@@ -113,31 +113,31 @@ const calendar = {
                 externalId: "application",
                 id: "1508",
                 value: "Заявка",
-                color: '#FFAB00'
+                // color: '#FFAB00'
             },
             {
                 externalId: "plan",
                 id: "1509",
                 value: "Запланировано",
-                color: '#00C4FB'
+                // color: '#00C4FB'
             },
             {
                 externalId: "denied",
                 id: "1510",
                 value: "Отказано",
-                color: '#FF5752'
+                // color: '#FF5752'
             },
             {
                 externalId: "canceled",
                 id: "1512",
                 value: "Отменено",
-                color: '#FF5752'
+                // color: '#FF5752'
             },
             {
                 externalId: "done",
                 id: "1511",
                 value: "Состоялось",
-                color: '#75D900'
+                // color: '#75D900'
             },
         ],
         tagsAreaOfInfluence: [{

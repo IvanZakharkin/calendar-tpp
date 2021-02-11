@@ -5,14 +5,31 @@
 
     &__body {
         padding: 10px;
+        position: relative;
     }
 
-    &__header {
+    &__header, &__footer {
         font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     &__text {
         font-size: 14px;
         color: gray;
+    }
+
+    &__person {
+        width: 40px;
+        height: 40px;
+    }
+
+    &__status {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 11px;
+        color: #b9bcc0;
     }
 }

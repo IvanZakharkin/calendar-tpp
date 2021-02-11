@@ -1,6 +1,6 @@
 <template>
     <div class="events-canban__column">
-        <div :class="'events-canban__column-header' + ' status-' + status.externalId" :style="headerStyle">
+        <div :class="'events-canban__column-header' + ' status-' + status.externalId">
             <div class="events-canban__column-title"> {{ status.value }} </div>
         </div>
         <div class="events-canban__column-body">
@@ -75,22 +75,9 @@ export default {
             isDrag: state => state.eventsCanban.isDrag,
             draggability: state => state.eventsCanban.draggability,
         }),
-        // eventsWidthDraggableEvents() {
-        //     var events = this.filteredEventsByStatus.slice();
-
-        //     events.push(this.dragEvent);
-
-        //     return events;
-        // },
         filteredEventsByDate() {
             return this.filteredEventsByStatus.sort((a, b) => a.dateStart - b.dateStart);
         },
-        headerStyle() {
-            return {
-                background: this.status.color
-            }
-        },
-        
     },
     methods: {
         ...mapMutations(['updateStatusEvent', 'changeStateDrag', 'changeStateUpdatingStatus', 'changeDraggability']),
