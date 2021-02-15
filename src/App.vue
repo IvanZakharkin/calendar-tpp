@@ -203,9 +203,8 @@ export default {
         type: "GET",
         url: "./",
         success: function(response) {
-          console.log(response.includes('id="app"'));
           if(!response.includes('id="app"')) {
-            console.log('перезагрузить');
+            window.location.reload();
           }
         }
       });

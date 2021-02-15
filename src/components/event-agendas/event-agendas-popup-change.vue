@@ -61,6 +61,7 @@ export default {
       hourEnd: "",
       minutesEnd: "",
       name: "",
+      description: "",
       participants: [],
       selectedParticipants:[]
     };
